@@ -1,0 +1,185 @@
+[
+  {
+    "nodeid": "tests/test_dashboard_validations.py::test_household_management_dashboard_tiles[chromium]",
+    "name": "test_household_management_dashboard_tiles[chromium]",
+    "outcome": "failed",
+    "duration": 651.2148693000199,
+    "error": "page = <Page url='https://cashapp.savethechildren.net/ReviewAndManageTransferRecords?id=9f2b3142-3e40-42cd-8a3c-9c01e6ebb887'>\n\n    def test_household_management_dashboard_tiles(page):\n        login = LoginPage(page)\n        dashboard = Dashboard(page)\n        failures = []\n    \n        # Authenticate using the same login flow as the happy-path test.\n        with report.step(\"Login to CVA application\"):\n            login.load()\n            login.login(\"SuperAdmin\", \"Welcome@2\")\n            report.assert_visible(login.userIcon, \"User icon visible after login\", timeout=60000)\n    \n        # Select and verify the configured Domain, Country, and Project.\n        with report.step(\"Select dashboard context\"):\n            page.wait_for_timeout(10000)\n            report.assert_enabled(dashboard.domain_drp, \"Domain dropdown enabled\")\n            report.assert_enabled(dashboard.country_drp, \"Country dropdown enabled\")\n            dashboard.select_country()\n            page.wait_for_timeout(1000)\n            report.assert_enabled(dashboard.project_drp, \"Project dropdown enabled\")\n            dashboard.select_project()\n            page.wait_for_load_state(\"networkidle\")\n    \n            report.validation(\n                \"Selected domain\",\n                EXPECTED_DOMAIN,\n                _selected_value(page, EXPECTED_DOMAIN),\n            )\n            report.validation(\n                \"Selected country\",\n                EXPECTED_COUNTRY,\n                _selected_value(page, EXPECTED_COUNTRY),\n            )\n            report.validation(\n                \"Selected project\",\n                EXPECTED_PROJECT,\n                _selected_value(page, EXPECTED_PROJECT),\n            )\n            expected_households = _wait_for_nonzero_tile_value(\n                page, \"TOTAL NUMBER OF HOUSEHOLDS\"\n            )\n            expected_beneficiaries = _wait_for_nonzero_tile_value(\n                page, \"TOTAL NUMBER OF BENEFICIARIES SELECTED\"\n            )\n    \n        # Compare the dashboard household tile with Master Household Data.\n        with report.step(\"Validate household tile against Master Household Data\"):\n            page.goto(HOUSEHOLD_DATA_URL, wait_until=\"domcontentloaded\")\n            page.get_by_text(\"NUMBER OF HOUSEHOLDS\", exact=True).wait_for(\n                state=\"visible\",\n                timeout=60000,\n            )\n            _record_tile_check(\n                page,\n                failures,\n                \"Total number of households\",\n                expected_households,\n                _wait_for_nonzero_tile_value(page, \"NUMBER OF HOUSEHOLDS\"),\n            )\n    \n        # Compare the dashboard beneficiary tile with approved beneficiary rows.\n        with report.step(\"Validate beneficiary tile against Beneficiary List Overview\"):\n            page.goto(BENEFICIARY_OVERVIEW_URL, wait_until=\"domcontentloaded\")\n            page.locator(\"table\").filter(has_text=\"Number of households\").first.wait_for(\n                state=\"visible\",\n                timeout=60000,\n            )\n            _record_tile_check(\n                page,\n                failures,\n                \"Total number of beneficiaries selected\",\n                expected_beneficiaries,\n                _number_of_households_total(page),\n            )\n    \n        # Compare all Payment Tracking Overview tiles with detail-page sums.\n        with report.step(\"Validate Payment Tracking Overview data\"):\n            page.goto(PAYMENT_TRACKING_URL, wait_until=\"domcontentloaded\")\n            _payment_tracking_table(page)\n            payment_tracking_totals = _payment_tracking_totals_from_rows(page)\n            for label, (expected, actual) in payment_tracking_totals.items():\n                _record_tile_check(\n                    page,\n                    failures,\n                    f\"Validate Payment Tracking Overview data - {label.title()}\",\n                    expected,\n                    actual,\n                )\n    \n        # Fail only after every validation and screenshot has been recorded.\n        with report.step(\"Complete dashboard validation checks\"):\n            if failures:\n>               raise AssertionError(\n                    \"Dashboard validation failures:\\n- \" + \"\\n- \".join(failures)\n                )\nE               AssertionError: Dashboard validation failures:\nE               - Validate Payment Tracking Overview data - Number Of Pending Household Transfers: expected 363, actual 362\nE               - Validate Payment Tracking Overview data - Number Of Successful Household Transfers: expected 692, actual 691\nE               - Validate Payment Tracking Overview data - Planned Total Transfer: expected 3357340.0, actual 3356740.0\nE               - Validate Payment Tracking Overview data - Actual Total Transfer: expected 426670.0, actual 426620.0\nE               - Validate Payment Tracking Overview data - Variance: expected -2930670.0, actual -2930120.0\n\ntests\\test_dashboard_validations.py:414: AssertionError",
+    "steps": [
+      {
+        "name": "Login to CVA application",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "User icon visible after login",
+        "status": "PASS",
+        "details": "Playwright assertion passed: visible",
+        "expected": "visible",
+        "actual": "visible",
+        "screenshot": null
+      },
+      {
+        "name": "Select dashboard context",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Domain dropdown enabled",
+        "status": "PASS",
+        "details": "Playwright assertion passed: enabled",
+        "expected": "enabled",
+        "actual": "enabled",
+        "screenshot": null
+      },
+      {
+        "name": "Country dropdown enabled",
+        "status": "PASS",
+        "details": "Playwright assertion passed: enabled",
+        "expected": "enabled",
+        "actual": "enabled",
+        "screenshot": null
+      },
+      {
+        "name": "Project dropdown enabled",
+        "status": "PASS",
+        "details": "Playwright assertion passed: enabled",
+        "expected": "enabled",
+        "actual": "enabled",
+        "screenshot": null
+      },
+      {
+        "name": "Selected domain",
+        "status": "PASS",
+        "details": "",
+        "expected": "sci-co-niger",
+        "actual": "sci-co-niger",
+        "screenshot": null
+      },
+      {
+        "name": "Selected country",
+        "status": "PASS",
+        "details": "",
+        "expected": "Niger CVA",
+        "actual": "Niger CVA",
+        "screenshot": null
+      },
+      {
+        "name": "Selected project",
+        "status": "PASS",
+        "details": "",
+        "expected": "BMZ RESA Training",
+        "actual": "BMZ RESA Training",
+        "screenshot": null
+      },
+      {
+        "name": "Validate household tile against Master Household Data",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Tile: Total number of households",
+        "status": "PASS",
+        "details": "",
+        "expected": 47,
+        "actual": 47,
+        "screenshot": null
+      },
+      {
+        "name": "Validate beneficiary tile against Beneficiary List Overview",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Tile: Total number of beneficiaries selected",
+        "status": "PASS",
+        "details": "",
+        "expected": 942,
+        "actual": 942,
+        "screenshot": null
+      },
+      {
+        "name": "Validate Payment Tracking Overview data",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Tile: Validate Payment Tracking Overview data - Number Of Pending Household Transfers",
+        "status": "FAIL",
+        "details": "",
+        "expected": 363,
+        "actual": 362,
+        "screenshot": "screenshots/Validate_Payment_Tracking_Overview_data_-_Number_Of_Pending_Household_Transfers_failure_1790072978821.png"
+      },
+      {
+        "name": "Tile: Validate Payment Tracking Overview data - Number Of Successful Household Transfers",
+        "status": "FAIL",
+        "details": "",
+        "expected": 692,
+        "actual": 691,
+        "screenshot": "screenshots/Validate_Payment_Tracking_Overview_data_-_Number_Of_Successful_Household_Transfers_failure_1790072979030.png"
+      },
+      {
+        "name": "Tile: Validate Payment Tracking Overview data - Number Of Failed Household Transfers",
+        "status": "PASS",
+        "details": "",
+        "expected": 49,
+        "actual": 49,
+        "screenshot": null
+      },
+      {
+        "name": "Tile: Validate Payment Tracking Overview data - Planned Total Transfer",
+        "status": "FAIL",
+        "details": "",
+        "expected": 3357340.0,
+        "actual": 3356740.0,
+        "screenshot": "screenshots/Validate_Payment_Tracking_Overview_data_-_Planned_Total_Transfer_failure_1790072979141.png"
+      },
+      {
+        "name": "Tile: Validate Payment Tracking Overview data - Actual Total Transfer",
+        "status": "FAIL",
+        "details": "",
+        "expected": 426670.0,
+        "actual": 426620.0,
+        "screenshot": "screenshots/Validate_Payment_Tracking_Overview_data_-_Actual_Total_Transfer_failure_1790072979267.png"
+      },
+      {
+        "name": "Tile: Validate Payment Tracking Overview data - Variance",
+        "status": "FAIL",
+        "details": "",
+        "expected": -2930670.0,
+        "actual": -2930120.0,
+        "screenshot": "screenshots/Validate_Payment_Tracking_Overview_data_-_Variance_failure_1790072979371.png"
+      },
+      {
+        "name": "Complete dashboard validation checks",
+        "status": "FAIL",
+        "details": "Dashboard validation failures:\n- Validate Payment Tracking Overview data - Number Of Pending Household Transfers: expected 363, actual 362\n- Validate Payment Tracking Overview data - Number Of Successful Household Transfers: expected 692, actual 691\n- Validate Payment Tracking Overview data - Planned Total Transfer: expected 3357340.0, actual 3356740.0\n- Validate Payment Tracking Overview data - Actual Total Transfer: expected 426670.0, actual 426620.0\n- Validate Payment Tracking Overview data - Variance: expected -2930670.0, actual -2930120.0",
+        "expected": null,
+        "actual": null,
+        "screenshot": "screenshots/Complete_dashboard_validation_checks_failure_1790072979505.png"
+      }
+    ],
+    "logs": [],
+    "metadata": {
+      "Browser": "chromium",
+      "URL": "https://cashapp.savethechildren.net/ReviewAndManageTransferRecords?id=9f2b3142-3e40-42cd-8a3c-9c01e6ebb887"
+    },
+    "failure_screenshot": "screenshots/Complete_dashboard_validation_checks_failure_1790072979505.png"
+  }
+]

@@ -1,0 +1,121 @@
+[
+  {
+    "nodeid": "tests/test_dashboard_validations.py::test_household_management_dashboard_tiles[chromium]",
+    "name": "test_household_management_dashboard_tiles[chromium]",
+    "outcome": "failed",
+    "duration": 95.28936489997432,
+    "error": "page = <Page url='https://cashapp.savethechildren.net/BeneficiaryListOverView'>\n\n    def test_household_management_dashboard_tiles(page):\n        login = LoginPage(page)\n        dashboard = Dashboard(page)\n    \n        with report.step(\"Login to CVA application\"):\n            login.load()\n            login.login(\"SuperAdmin\", \"Welcome@2\")\n            report.assert_visible(login.userIcon, \"User icon visible after login\", timeout=60000)\n    \n        with report.step(\"Select dashboard context\"):\n            page.wait_for_timeout(10000)\n            report.assert_enabled(dashboard.domain_drp, \"Domain dropdown enabled\")\n            report.assert_enabled(dashboard.country_drp, \"Country dropdown enabled\")\n            dashboard.select_country()\n            page.wait_for_timeout(1000)\n            report.assert_enabled(dashboard.project_drp, \"Project dropdown enabled\")\n            dashboard.select_project()\n            page.wait_for_load_state(\"networkidle\")\n    \n            report.validation(\n                \"Selected domain\",\n                EXPECTED_DOMAIN,\n                _selected_value(page, EXPECTED_DOMAIN),\n            )\n            report.validation(\n                \"Selected country\",\n                EXPECTED_COUNTRY,\n                _selected_value(page, EXPECTED_COUNTRY),\n            )\n            report.validation(\n                \"Selected project\",\n                EXPECTED_PROJECT,\n                _selected_value(page, EXPECTED_PROJECT),\n            )\n            page.reload(wait_until=\"domcontentloaded\")\n            page.wait_for_timeout(5000)\n            expected_households = _wait_for_nonzero_tile_value(\n                page, \"TOTAL NUMBER OF HOUSEHOLDS\"\n            )\n            expected_beneficiaries = _wait_for_nonzero_tile_value(\n                page, \"TOTAL NUMBER OF BENEFICIARIES SELECTED\"\n            )\n    \n        with report.step(\"Validate household tile against Master Household Data\"):\n            page.goto(HOUSEHOLD_DATA_URL, wait_until=\"domcontentloaded\")\n            page.get_by_text(\"NUMBER OF HOUSEHOLDS\", exact=True).wait_for(\n                state=\"visible\",\n                timeout=60000,\n            )\n            report.tile_validation(\n                \"Total number of households\",\n                expected=expected_households,\n                actual=_wait_for_nonzero_tile_value(page, \"NUMBER OF HOUSEHOLDS\"),\n            )\n    \n        with report.step(\"Validate beneficiary tile against Beneficiary List Overview\"):\n            page.goto(BENEFICIARY_OVERVIEW_URL, wait_until=\"domcontentloaded\")\n            page.locator(\"table\").filter(has_text=\"Number of households\").first.wait_for(\n                state=\"visible\",\n                timeout=60000,\n            )\n>           report.tile_validation(\n                \"Total number of beneficiaries selected\",\n                expected=expected_beneficiaries,\n                actual=_number_of_households_total(page),\n            )\n\ntests\\test_dashboard_validations.py:174: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\nbth_qa_reporter\\reporter.py:153: in tile_validation\n    return self.validation(f\"Tile: {tile_name}\", expected, actual, assert_result=assert_result)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <bth_qa_reporter.reporter.Reporter object at 0x0000024CDA9934D0>, label = 'Tile: Total number of beneficiaries selected', expected = 942, actual = 1399, details = '', assert_result = True\n\n    def validation(self, label: str, expected: Any, actual: Any, details: str = \"\", assert_result: bool = False):\n        status = \"PASS\" if expected == actual else \"FAIL\"\n        self._add(label, status, details=details, expected=expected, actual=actual)\n        if assert_result and status == \"FAIL\":\n>           raise AssertionError(\n                f\"{label} validation failed | Expected: {expected!r} | Actual: {actual!r}\"\n            )\nE           AssertionError: Tile: Total number of beneficiaries selected validation failed | Expected: 942 | Actual: 1399\n\nbth_qa_reporter\\reporter.py:144: AssertionError",
+    "steps": [
+      {
+        "name": "Login to CVA application",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "User icon visible after login",
+        "status": "PASS",
+        "details": "Playwright assertion passed: visible",
+        "expected": "visible",
+        "actual": "visible",
+        "screenshot": null
+      },
+      {
+        "name": "Select dashboard context",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Domain dropdown enabled",
+        "status": "PASS",
+        "details": "Playwright assertion passed: enabled",
+        "expected": "enabled",
+        "actual": "enabled",
+        "screenshot": null
+      },
+      {
+        "name": "Country dropdown enabled",
+        "status": "PASS",
+        "details": "Playwright assertion passed: enabled",
+        "expected": "enabled",
+        "actual": "enabled",
+        "screenshot": null
+      },
+      {
+        "name": "Project dropdown enabled",
+        "status": "PASS",
+        "details": "Playwright assertion passed: enabled",
+        "expected": "enabled",
+        "actual": "enabled",
+        "screenshot": null
+      },
+      {
+        "name": "Selected domain",
+        "status": "PASS",
+        "details": "",
+        "expected": "sci-co-niger",
+        "actual": "sci-co-niger",
+        "screenshot": null
+      },
+      {
+        "name": "Selected country",
+        "status": "PASS",
+        "details": "",
+        "expected": "Niger CVA",
+        "actual": "Niger CVA",
+        "screenshot": null
+      },
+      {
+        "name": "Selected project",
+        "status": "PASS",
+        "details": "",
+        "expected": "BMZ RESA Training",
+        "actual": "BMZ RESA Training",
+        "screenshot": null
+      },
+      {
+        "name": "Validate household tile against Master Household Data",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Tile: Total number of households",
+        "status": "PASS",
+        "details": "",
+        "expected": 47,
+        "actual": 47,
+        "screenshot": null
+      },
+      {
+        "name": "Validate beneficiary tile against Beneficiary List Overview",
+        "status": "FAIL",
+        "details": "Tile: Total number of beneficiaries selected validation failed | Expected: 942 | Actual: 1399",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Tile: Total number of beneficiaries selected",
+        "status": "FAIL",
+        "details": "",
+        "expected": 942,
+        "actual": 1399,
+        "screenshot": "screenshots/Validate_beneficiary_tile_against_Beneficiary_List_Overview_failure_1789983716809.png"
+      }
+    ],
+    "logs": [],
+    "metadata": {
+      "Browser": "chromium",
+      "URL": "https://cashapp.savethechildren.net/BeneficiaryListOverView"
+    },
+    "failure_screenshot": "screenshots/Validate_beneficiary_tile_against_Beneficiary_List_Overview_failure_1789983716809.png"
+  }
+]

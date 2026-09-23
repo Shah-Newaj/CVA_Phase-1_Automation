@@ -1,0 +1,13 @@
+[
+  {
+    "nodeid": "tests/test_report_print_logging.py::test_report_logs_print_output",
+    "name": "test_report_logs_print_output",
+    "outcome": "passed",
+    "duration": 0.00011830000585177913,
+    "error": "",
+    "steps": [],
+    "logs": [],
+    "metadata": {},
+    "failure_screenshot": null
+  }
+]

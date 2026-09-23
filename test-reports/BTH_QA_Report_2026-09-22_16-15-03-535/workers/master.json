@@ -1,0 +1,89 @@
+[
+  {
+    "nodeid": "tests/test_dashboard_validations.py::test_household_management_dashboard_tiles[chromium]",
+    "name": "test_household_management_dashboard_tiles[chromium]",
+    "outcome": "failed",
+    "duration": 98.16462520009372,
+    "error": "page = <Page url='https://cashapp.savethechildren.net/'>\n\n    def test_household_management_dashboard_tiles(page):\n        login = LoginPage(page)\n        dashboard = Dashboard(page)\n        failures = []\n    \n        # Authenticate using the same login flow as the happy-path test.\n        with report.step(\"Login to CVA application\"):\n            login.load()\n            login.login(\"SuperAdmin\", \"Welcome@2\")\n            report.assert_visible(login.userIcon, \"User icon visible after login\", timeout=60000)\n    \n        # Select and verify the configured Domain, Country, and Project.\n        with report.step(\"Select dashboard context\"):\n            page.wait_for_timeout(10000)\n            report.assert_enabled(dashboard.domain_drp, \"Domain dropdown enabled\")\n            report.assert_enabled(dashboard.country_drp, \"Country dropdown enabled\")\n            dashboard.select_country()\n            page.wait_for_timeout(1000)\n            report.assert_enabled(dashboard.project_drp, \"Project dropdown enabled\")\n            dashboard.select_project()\n            page.wait_for_load_state(\"networkidle\")\n    \n            report.validation(\n                \"Selected domain\",\n                EXPECTED_DOMAIN,\n                _selected_value(page, EXPECTED_DOMAIN),\n            )\n            report.validation(\n                \"Selected country\",\n                EXPECTED_COUNTRY,\n                _selected_value(page, EXPECTED_COUNTRY),\n            )\n            report.validation(\n                \"Selected project\",\n                EXPECTED_PROJECT,\n                _selected_value(page, EXPECTED_PROJECT),\n            )\n>           expected_households = _wait_for_nonzero_tile_value(\n                page, \"TOTAL NUMBER OF HOUSEHOLDS\"\n            )\n\ntests\\test_dashboard_validations.py:360: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\npage = <Page url='https://cashapp.savethechildren.net/'>\nlabel = 'TOTAL NUMBER OF HOUSEHOLDS'\n\n    def _wait_for_nonzero_tile_value(page, label: str) -> int:\n        deadline = time.monotonic() + 60000 / 1000\n        actual_value = \"\"\n        while time.monotonic() < deadline:\n            actual_value = _tile_value(page, label)\n            if int(float(actual_value)) > 0:\n                return int(float(actual_value))\n            page.wait_for_timeout(1000)\n>       raise AssertionError(\n            f\"Timed out waiting for {label!r} to load a non-zero value; \"\n            f\"last value was {actual_value!r}.\"\n        )\nE       AssertionError: Timed out waiting for 'TOTAL NUMBER OF HOUSEHOLDS' to load a non-zero value; last value was '0'.\n\ntests\\test_dashboard_validations.py:84: AssertionError",
+    "steps": [
+      {
+        "name": "Login to CVA application",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "User icon visible after login",
+        "status": "PASS",
+        "details": "Playwright assertion passed: visible",
+        "expected": "visible",
+        "actual": "visible",
+        "screenshot": null
+      },
+      {
+        "name": "Select dashboard context",
+        "status": "FAIL",
+        "details": "Timed out waiting for 'TOTAL NUMBER OF HOUSEHOLDS' to load a non-zero value; last value was '0'.",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Domain dropdown enabled",
+        "status": "PASS",
+        "details": "Playwright assertion passed: enabled",
+        "expected": "enabled",
+        "actual": "enabled",
+        "screenshot": null
+      },
+      {
+        "name": "Country dropdown enabled",
+        "status": "PASS",
+        "details": "Playwright assertion passed: enabled",
+        "expected": "enabled",
+        "actual": "enabled",
+        "screenshot": null
+      },
+      {
+        "name": "Project dropdown enabled",
+        "status": "PASS",
+        "details": "Playwright assertion passed: enabled",
+        "expected": "enabled",
+        "actual": "enabled",
+        "screenshot": null
+      },
+      {
+        "name": "Selected domain",
+        "status": "PASS",
+        "details": "",
+        "expected": "sci-co-niger",
+        "actual": "sci-co-niger",
+        "screenshot": null
+      },
+      {
+        "name": "Selected country",
+        "status": "PASS",
+        "details": "",
+        "expected": "Niger CVA",
+        "actual": "Niger CVA",
+        "screenshot": null
+      },
+      {
+        "name": "Selected project",
+        "status": "FAIL",
+        "details": "",
+        "expected": "BMZ RESA Training",
+        "actual": "BMZ RESA Training",
+        "screenshot": "screenshots/Select_dashboard_context_failure_1790072202655.png"
+      }
+    ],
+    "logs": [],
+    "metadata": {
+      "Browser": "chromium",
+      "URL": "https://cashapp.savethechildren.net/"
+    },
+    "failure_screenshot": "screenshots/Select_dashboard_context_failure_1790072202655.png"
+  }
+]
