@@ -1,0 +1,1082 @@
+[
+  {
+    "nodeid": "tests/ui_quality_tests/test_cva_core_application_ui_quality.py::test_cva_core_application_ui_quality[chromium]",
+    "name": "test_cva_core_application_ui_quality[chromium]",
+    "outcome": "failed",
+    "duration": 111.60109519999241,
+    "error": "page = <Page url='https://cashapp.savethechildren.net/CountryProjectMapperList'>\n\n    @pytest.mark.ui_quality\n    def test_cva_core_application_ui_quality(page):\n        \"\"\"\n        Phase-1 full core CVA application UI-quality scan.\n    \n        Navigation follows the same Page Object Model used by the\n        functional CVA automation.\n    \n        Covered pages:\n    \n            1. Dashboard\n    \n            2. Beneficiary List Overview\n            3. Beneficiary List Approval\n    \n            4. Payment List Overview\n            5. Payment List Approval\n            6. Payment Tracking Overview\n    \n            7. Sample Report Overview\n            8. Sample Report Approval\n    \n        Safe modal checks:\n    \n            - Create New Beneficiary List\n            - Create New Payment List\n            - Create New Sample\n    \n        The test DOES NOT:\n    \n            - create business data\n            - save business data\n            - submit business data\n            - approve business data\n            - delete business data\n    \n        Excluded from this Phase-1 scan:\n    \n            - Fetch Data\n            - Sync Data\n            - Accessibility scanning\n    \n        UI-quality categories:\n    \n            - Mixed capitalization\n            - Spelling / grammar\n            - UI consistency\n            - Visual issue evidence\n        \"\"\"\n    \n        # ========================================================\n        # Page Objects\n        # ========================================================\n    \n        login = LoginPage(page)\n        dashboard = Dashboard(page)\n        beneficiary = BeneficiaryListPage(page)\n        payment = PaymentListPage(page)\n        sampling = SamplingPage(page)\n        configuration = ConfigurationPage(page)\n    \n        scanner = UIQualityScanner(\n            language=LANGUAGE,\n        )\n    \n        page_results: list[ScanResult] = []\n        navigation_errors: list[str] = []\n    \n        # ========================================================\n        # Login\n        # ========================================================\n    \n        with report.step(\n            \"Login for core CVA UI quality scan\"\n        ):\n    \n            login.load()\n    \n            login.login(\"SuperAdmin\", \"Welcome@2\")\n            report.assert_visible(\n                login.userIcon,\n                \"User icon visible after login\",\n                timeout=15000,\n            )\n            page.wait_for_timeout(10000)\n    \n        # ========================================================\n        # Select Country\n        # ========================================================\n    \n        with report.step(\"Select Country\"):\n    \n            try:\n    \n                report.assert_enabled(\n                    dashboard.country_drp,\n                    \"Country dropdown enabled\",\n                )\n                dashboard.select_country()\n    \n                page.wait_for_timeout(1000)\n    \n            except Exception as exc:\n    \n                navigation_errors.append(\n                    f\"Select Country failed: {exc}\"\n                )\n    \n                report.log(\n                    f\"Select Country failed: {exc}\",\n                    \"UI-QUALITY\",\n                )\n    \n        # ========================================================\n        # Select Project\n        # ========================================================\n    \n        with report.step(\"Select Project\"):\n    \n            try:\n    \n                dashboard.select_project()\n                page.wait_for_load_state(\"networkidle\")\n    \n            except Exception as exc:\n    \n                navigation_errors.append(\n                    f\"Select Project failed: {exc}\"\n                )\n    \n                report.log(\n                    f\"Select Project failed: {exc}\",\n                    \"UI-QUALITY\",\n                )\n    \n        # ========================================================\n        # 1. Dashboard\n        # ========================================================\n    \n        scan_current_page(\n            page=page,\n            scanner=scanner,\n            page_results=page_results,\n            page_name=\"Dashboard\",\n            navigation_errors=navigation_errors,\n        )\n    \n        # ========================================================\n        # 2. Beneficiary List Overview\n        # ========================================================\n    \n        beneficiary_overview_open = navigate_and_scan(\n            page=page,\n            scanner=scanner,\n            page_results=page_results,\n            navigation_errors=navigation_errors,\n            page_name=\"Beneficiary List Overview\",\n            navigate=lambda: open_beneficiary_overview(\n                beneficiary\n            ),\n        )\n    \n        # Safe Create New Beneficiary List modal\n    \n        if beneficiary_overview_open:\n            scan_safe_modal(\n                page=page,\n                scanner=scanner,\n                page_results=page_results,\n                navigation_errors=navigation_errors,\n                page_name=\"Beneficiary List Overview\",\n                modal_name=\"Create New Beneficiary List\",\n                open_action=lambda: beneficiary.create_btn.click(timeout=10000),\n            )\n    \n        # ========================================================\n        # 3. Beneficiary List Approval\n        # ========================================================\n    \n        navigate_and_scan(\n            page=page,\n            scanner=scanner,\n            page_results=page_results,\n            navigation_errors=navigation_errors,\n            page_name=\"Beneficiary List Approval\",\n            navigate=lambda: open_beneficiary_approval(\n                beneficiary\n            ),\n        )\n    \n        # ========================================================\n        # 4. Payment List Overview\n        # ========================================================\n    \n        payment_overview_open = navigate_and_scan(\n            page=page,\n            scanner=scanner,\n            page_results=page_results,\n            navigation_errors=navigation_errors,\n            page_name=\"Payment List Overview\",\n            navigate=lambda: open_payment_overview(\n                payment\n            ),\n        )\n    \n        # Safe Create New Payment List modal\n    \n        if payment_overview_open:\n            scan_safe_modal(\n                page=page,\n                scanner=scanner,\n                page_results=page_results,\n                navigation_errors=navigation_errors,\n                page_name=\"Payment List Overview\",\n                modal_name=\"Create New Payment List\",\n                open_action=lambda: payment.create_btn.click(timeout=10000),\n            )\n    \n        # ========================================================\n        # 5. Payment List Approval\n        # ========================================================\n    \n        navigate_and_scan(\n            page=page,\n            scanner=scanner,\n            page_results=page_results,\n            navigation_errors=navigation_errors,\n            page_name=\"Payment List Approval\",\n            navigate=lambda: open_payment_approval(\n                payment\n            ),\n        )\n    \n        # ========================================================\n        # 6. Payment Tracking Overview\n        # ========================================================\n    \n        navigate_and_scan(\n            page=page,\n            scanner=scanner,\n            page_results=page_results,\n            navigation_errors=navigation_errors,\n            page_name=\"Payment Tracking Overview\",\n            navigate=lambda: open_payment_tracking(\n                payment\n            ),\n        )\n    \n        # ========================================================\n        # 7. Sample Report Overview\n        # ========================================================\n    \n        sample_overview_open = navigate_and_scan(\n            page=page,\n            scanner=scanner,\n            page_results=page_results,\n            navigation_errors=navigation_errors,\n            page_name=\"Sample Report Overview\",\n            navigate=lambda: open_sample_overview(\n                sampling\n            ),\n        )\n    \n        # Safe Create New Sample modal\n    \n        if sample_overview_open:\n            scan_safe_modal(\n                page=page,\n                scanner=scanner,\n                page_results=page_results,\n                navigation_errors=navigation_errors,\n                page_name=\"Sample Report Overview\",\n                modal_name=\"Create New Sample\",\n                open_action=lambda: sampling.create_btn.click(timeout=10000),\n            )\n    \n        # ========================================================\n        # 8. Sample Report Approval\n        # ========================================================\n    \n        navigate_and_scan(\n            page=page,\n            scanner=scanner,\n            page_results=page_results,\n            navigation_errors=navigation_errors,\n            page_name=\"Sample Report Approval\",\n            navigate=lambda: open_sample_approval(\n                sampling\n            ),\n        )\n    \n        # ========================================================\n        # 9. Configuration: Project Criteria Setup\n        # ========================================================\n    \n        criteria_open = navigate_and_scan(\n            page=page,\n            scanner=scanner,\n            page_results=page_results,\n            navigation_errors=navigation_errors,\n            page_name=\"Project Criteria Setup List\",\n            navigate=lambda: open_project_criteria(configuration),\n        )\n    \n        if criteria_open:\n            def open_project_criteria_add_new():\n                add_new = configuration.get_visible_add_new()\n    \n                if add_new is None:\n                    raise RuntimeError(\n                        \"Project Criteria Setup: \"\n                        \"visible/enabled 'Add New' button could not be located.\"\n                    )\n    \n                add_new.scroll_into_view_if_needed()\n    \n                add_new.click(timeout=10000)\n    \n            scan_safe_modal(\n                page=page,\n                scanner=scanner,\n                page_results=page_results,\n                navigation_errors=navigation_errors,\n                page_name=\"Project Criteria Setup List\",\n                modal_name=\"Project Criteria Setup\",\n                open_action=open_project_criteria_add_new,\n            )\n    \n        # ========================================================\n        # 10. Configuration: Country Project Mapper\n        # ========================================================\n    \n        navigate_and_scan(\n            page=page,\n            scanner=scanner,\n            page_results=page_results,\n            navigation_errors=navigation_errors,\n            page_name=\"Country Project Mapper List\",\n            navigate=lambda: open_country_project_mapper(configuration),\n        )\n    \n        # ========================================================\n        # Final Summary\n        # ========================================================\n    \n        total_issues = sum(\n            result.total_issues\n            for result in page_results\n        )\n    \n        total_warnings = sum(\n            len(getattr(result, \"scanner_warnings\", []))\n            for result in page_results\n        )\n    \n        log_application_summary(\n            page_results=page_results,\n            navigation_errors=navigation_errors,\n            total_warnings=total_warnings,\n        )\n    \n        # ========================================================\n        # Navigation errors\n        # ========================================================\n    \n        if navigation_errors:\n    \n            report.log(\n                \"===== NAVIGATION / FLOW WARNINGS =====\",\n                \"UI-QUALITY\",\n            )\n    \n            for error in navigation_errors:\n    \n                report.log(\n                    error,\n                    \"UI-QUALITY\",\n                )\n    \n        # ========================================================\n        # Final Result\n        # ========================================================\n    \n        report.log(\n            f\"TOTAL PAGES / MODALS SCANNED: \"\n            f\"{len(page_results)}\",\n            \"UI-QUALITY\",\n        )\n    \n        report.log(\n            f\"TOTAL UI QUALITY ISSUES: \"\n            f\"{total_issues}\",\n            \"UI-QUALITY\",\n        )\n    \n        report.log(\n            f\"TOTAL SCANNER WARNINGS: \"\n            f\"{total_warnings}\",\n            \"UI-QUALITY\",\n        )\n    \n        # Navigation errors are treated separately from\n        # application UI defects.\n    \n        assert not navigation_errors, (\n            \"CVA UI-quality scan encountered \"\n            \"navigation/flow problems:\\n\"\n            + \"\\n\".join(navigation_errors)\n        )\n    \n>       assert total_issues == 0, (\n            f\"CVA UI-quality scan found \"\n            f\"{total_issues} application UI-quality issue(s).\"\n        )\nE       AssertionError: CVA UI-quality scan found 5 application UI-quality issue(s).\nE       assert 5 == 0\n\ntests\\ui_quality_tests\\test_cva_core_application_ui_quality.py:447: AssertionError",
+    "steps": [
+      {
+        "name": "Login for core CVA UI quality scan",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "User icon visible after login",
+        "status": "PASS",
+        "details": "Playwright assertion passed: visible",
+        "expected": "visible",
+        "actual": "visible",
+        "screenshot": null
+      },
+      {
+        "name": "Select Country",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Country dropdown enabled",
+        "status": "PASS",
+        "details": "Playwright assertion passed: enabled",
+        "expected": "enabled",
+        "actual": "enabled",
+        "screenshot": null
+      },
+      {
+        "name": "Select Project",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Scan UI quality: Dashboard",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Open menu page: Beneficiary List Overview",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Scan UI quality: Beneficiary List Overview",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Open safe modal: Create New Beneficiary List",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Scan UI quality: Beneficiary List Overview - Create New Beneficiary List",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Open menu page: Beneficiary List Approval",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Scan UI quality: Beneficiary List Approval",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Open menu page: Payment List Overview",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Scan UI quality: Payment List Overview",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Open safe modal: Create New Payment List",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Scan UI quality: Payment List Overview - Create New Payment List",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Open menu page: Payment List Approval",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Scan UI quality: Payment List Approval",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Open menu page: Payment Tracking Overview",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Scan UI quality: Payment Tracking Overview",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Open menu page: Sample Report Overview",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Scan UI quality: Sample Report Overview",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Open safe modal: Create New Sample",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Scan UI quality: Sample Report Overview - Create New Sample",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Open menu page: Sample Report Approval",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Scan UI quality: Sample Report Approval",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Open menu page: Project Criteria Setup List",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Scan UI quality: Project Criteria Setup List",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Open safe modal: Project Criteria Setup",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Scan UI quality: Project Criteria Setup List - Project Criteria Setup",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Open menu page: Country Project Mapper List",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Scan UI quality: Country Project Mapper List",
+        "status": "FAIL",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": "screenshots/test_cva_core_application_ui_quality_chromium__failure_1790656087961.png"
+      }
+    ],
+    "logs": [
+      {
+        "level": "UI-QUALITY",
+        "message": "===== Dashboard ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "URL: https://cashapp.savethechildren.net/"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== CONTENT / CAPITALIZATION ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== SPELLING / GRAMMAR ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== BUTTON / UI CONSISTENCY ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== Beneficiary List Overview ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "URL: https://cashapp.savethechildren.net/BeneficiaryListOverView"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== CONTENT / CAPITALIZATION ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== SPELLING / GRAMMAR ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== BUTTON / UI CONSISTENCY ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== Beneficiary List Overview - Create New Beneficiary List ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "URL: https://cashapp.savethechildren.net/BeneficiaryListOverView"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== CONTENT / CAPITALIZATION ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== SPELLING / GRAMMAR ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== BUTTON / UI CONSISTENCY ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Create New Beneficiary List: closed successfully."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== Beneficiary List Approval ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "URL: https://cashapp.savethechildren.net/BeneficiaryListApproval"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== CONTENT / CAPITALIZATION ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== SPELLING / GRAMMAR ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== BUTTON / UI CONSISTENCY ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== Payment List Overview ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "URL: https://cashapp.savethechildren.net/PaymentListOverView"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== CONTENT / CAPITALIZATION ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== SPELLING / GRAMMAR ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== BUTTON / UI CONSISTENCY ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Could not capture evidence for Spelling / Grammar: Could not locate exact visible text 'Select Select' for screenshot evidence."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== Payment List Overview - Create New Payment List ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "URL: https://cashapp.savethechildren.net/PaymentListOverView"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== CONTENT / CAPITALIZATION ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== SPELLING / GRAMMAR ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Type: Spelling / Grammar | Element/Text: Select Select | Possible typo: you repeated a word. | Actual: Select Select | Expected: Select | Suggestion: Select | Suggestions: Select | Context: ...Created By Date of Creation Location3 * Select Select Beneficiary List(s) * Select Add Additi... | URL: https://cashapp.savethechildren.net/PaymentListOverView"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== BUTTON / UI CONSISTENCY ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Create New Payment List: closed successfully."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== Payment List Approval ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "URL: https://cashapp.savethechildren.net/PaymentListApproval"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== CONTENT / CAPITALIZATION ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== SPELLING / GRAMMAR ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== BUTTON / UI CONSISTENCY ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== Payment Tracking Overview ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "URL: https://cashapp.savethechildren.net/PaymentTrackingOverview"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== CONTENT / CAPITALIZATION ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== SPELLING / GRAMMAR ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== BUTTON / UI CONSISTENCY ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== Sample Report Overview ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "URL: https://cashapp.savethechildren.net/SampleReportOverView"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== CONTENT / CAPITALIZATION ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Type: Mixed Capitalization | Element/Text: OverView | Possible incorrect capitalization in 'OverView'. Check whether the word should use normal title/sentence casing. | Actual: OverView | Expected: Overview | Suggestion: Overview | Evidence: screenshots/issue_Sample_Report_Overview_content___capitalization_1_1790656062676.png | URL: https://cashapp.savethechildren.net/SampleReportOverView"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== SPELLING / GRAMMAR ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== BUTTON / UI CONSISTENCY ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Could not capture evidence for Spelling / Grammar: Could not locate exact visible text 'Sample Sample' for screenshot evidence."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== Sample Report Overview - Create New Sample ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "URL: https://cashapp.savethechildren.net/SampleReportOverView"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== CONTENT / CAPITALIZATION ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== SPELLING / GRAMMAR ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Type: Spelling / Grammar | Element/Text: Sample Sample | Possible typo: you repeated a word. | Actual: Sample Sample | Expected: Sample | Suggestion: Sample | Suggestions: Sample | Context: Create New Sample Sample Name Survey Type Select Survey Type Whi... | URL: https://cashapp.savethechildren.net/SampleReportOverView"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Type: Spelling / Grammar | Element/Text: Endline | Possible spelling mistake found. | Actual: Endline | Expected: Edline | Suggestion: Edline | Suggestions: Edline, End line | Context: ...has been sampled by using the Baseline, Endline and PDM Survey Status columns. If you w... | Evidence: screenshots/issue_Sample_Report_Overview_-_Create_New_Sample_spelling___grammar_2_1790656070413.png | URL: https://cashapp.savethechildren.net/SampleReportOverView"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== BUTTON / UI CONSISTENCY ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Create New Sample: closed successfully."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== Sample Report Approval ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "URL: https://cashapp.savethechildren.net/SampleReportApproval"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== CONTENT / CAPITALIZATION ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== SPELLING / GRAMMAR ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== BUTTON / UI CONSISTENCY ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== Project Criteria Setup List ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "URL: https://cashapp.savethechildren.net/ProjectCriteriaSetupList"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== CONTENT / CAPITALIZATION ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== SPELLING / GRAMMAR ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== BUTTON / UI CONSISTENCY ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== Project Criteria Setup List - Project Criteria Setup ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "URL: https://cashapp.savethechildren.net/ProjectCriteriaSetupList"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== CONTENT / CAPITALIZATION ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== SPELLING / GRAMMAR ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== BUTTON / UI CONSISTENCY ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Type: UI Spacing Anomaly | Element/Text: Save | Custom form action 'Save' has reduced horizontal spacing around its label. | Actual: wrapperWidth=31.5px, textWidth=31.5px, left=0.0px, right=0.0px | Expected: At least 10px horizontal padding on each side of the Save action | Suggestion: Review the horizontal padding of the Save action against the standard application button spacing. | Evidence: screenshots/issue_Project_Criteria_Setup_List_-_Project_Criteria_Setup_button___ui_consistency_1_1790656084024.png | URL: https://cashapp.savethechildren.net/ProjectCriteriaSetupList"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Project Criteria Setup: closed successfully."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== Country Project Mapper List ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "URL: https://cashapp.savethechildren.net/CountryProjectMapperList"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== CONTENT / CAPITALIZATION ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== SPELLING / GRAMMAR ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "===== BUTTON / UI CONSISTENCY ====="
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "PASS - no issues detected."
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "========================================"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "CVA UI QUALITY SCAN SUMMARY"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "========================================"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Pages / Modals scanned: 14"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Total UI-quality issues: 5"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Scanner warnings: 2"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Navigation / flow warnings: 0"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Dashboard | Issues: 0 | URL: https://cashapp.savethechildren.net/"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Beneficiary List Overview | Issues: 0 | URL: https://cashapp.savethechildren.net/BeneficiaryListOverView"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Beneficiary List Overview - Create New Beneficiary List | Issues: 0 | URL: https://cashapp.savethechildren.net/BeneficiaryListOverView"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Beneficiary List Approval | Issues: 0 | URL: https://cashapp.savethechildren.net/BeneficiaryListApproval"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Payment List Overview | Issues: 0 | URL: https://cashapp.savethechildren.net/PaymentListOverView"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Payment List Overview - Create New Payment List | Issues: 1 | URL: https://cashapp.savethechildren.net/PaymentListOverView"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Payment List Approval | Issues: 0 | URL: https://cashapp.savethechildren.net/PaymentListApproval"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Payment Tracking Overview | Issues: 0 | URL: https://cashapp.savethechildren.net/PaymentTrackingOverview"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Sample Report Overview | Issues: 1 | URL: https://cashapp.savethechildren.net/SampleReportOverView"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Sample Report Overview - Create New Sample | Issues: 2 | URL: https://cashapp.savethechildren.net/SampleReportOverView"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Sample Report Approval | Issues: 0 | URL: https://cashapp.savethechildren.net/SampleReportApproval"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Project Criteria Setup List | Issues: 0 | URL: https://cashapp.savethechildren.net/ProjectCriteriaSetupList"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Project Criteria Setup List - Project Criteria Setup | Issues: 1 | URL: https://cashapp.savethechildren.net/ProjectCriteriaSetupList"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "Country Project Mapper List | Issues: 0 | URL: https://cashapp.savethechildren.net/CountryProjectMapperList"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "TOTAL PAGES / MODALS SCANNED: 14"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "TOTAL UI QUALITY ISSUES: 5"
+      },
+      {
+        "level": "UI-QUALITY",
+        "message": "TOTAL SCANNER WARNINGS: 2"
+      }
+    ],
+    "metadata": {
+      "Browser": "chromium",
+      "URL": "https://cashapp.savethechildren.net/CountryProjectMapperList"
+    },
+    "quality_scans": [
+      {
+        "page_name": "Dashboard",
+        "url": "https://cashapp.savethechildren.net/",
+        "content_issues": [],
+        "language_issues": [],
+        "ui_issues": [],
+        "scanner_warnings": [],
+        "total_issues": 0
+      },
+      {
+        "page_name": "Beneficiary List Overview",
+        "url": "https://cashapp.savethechildren.net/BeneficiaryListOverView",
+        "content_issues": [],
+        "language_issues": [],
+        "ui_issues": [],
+        "scanner_warnings": [],
+        "total_issues": 0
+      },
+      {
+        "page_name": "Beneficiary List Overview - Create New Beneficiary List",
+        "url": "https://cashapp.savethechildren.net/BeneficiaryListOverView",
+        "content_issues": [],
+        "language_issues": [],
+        "ui_issues": [],
+        "scanner_warnings": [],
+        "total_issues": 0
+      },
+      {
+        "page_name": "Beneficiary List Approval",
+        "url": "https://cashapp.savethechildren.net/BeneficiaryListApproval",
+        "content_issues": [],
+        "language_issues": [],
+        "ui_issues": [],
+        "scanner_warnings": [],
+        "total_issues": 0
+      },
+      {
+        "page_name": "Payment List Overview",
+        "url": "https://cashapp.savethechildren.net/PaymentListOverView",
+        "content_issues": [],
+        "language_issues": [],
+        "ui_issues": [],
+        "scanner_warnings": [],
+        "total_issues": 0
+      },
+      {
+        "page_name": "Payment List Overview - Create New Payment List",
+        "url": "https://cashapp.savethechildren.net/PaymentListOverView",
+        "content_issues": [],
+        "language_issues": [
+          {
+            "type": "Spelling / Grammar",
+            "text": "Select Select",
+            "actual": "Select Select",
+            "message": "Possible typo: you repeated a word.",
+            "suggestions": [
+              "Select"
+            ],
+            "context": "...Created By Date of Creation Location3 * Select Select Beneficiary List(s) * Select Add Additi...",
+            "offset": 85,
+            "length": 13,
+            "rule": "ENGLISH_WORD_REPEAT_RULE",
+            "category": "MISC",
+            "page_name": "Payment List Overview - Create New Payment List",
+            "url": "https://cashapp.savethechildren.net/PaymentListOverView",
+            "element": "Select Select",
+            "suggestion": "Select",
+            "expected": "Select"
+          }
+        ],
+        "ui_issues": [],
+        "scanner_warnings": [
+          {
+            "type": "Evidence Warning",
+            "message": "Could not capture evidence for Spelling / Grammar: Could not locate exact visible text 'Select Select' for screenshot evidence.",
+            "page_name": "Payment List Overview - Create New Payment List",
+            "url": "https://cashapp.savethechildren.net/PaymentListOverView"
+          }
+        ],
+        "total_issues": 1
+      },
+      {
+        "page_name": "Payment List Approval",
+        "url": "https://cashapp.savethechildren.net/PaymentListApproval",
+        "content_issues": [],
+        "language_issues": [],
+        "ui_issues": [],
+        "scanner_warnings": [],
+        "total_issues": 0
+      },
+      {
+        "page_name": "Payment Tracking Overview",
+        "url": "https://cashapp.savethechildren.net/PaymentTrackingOverview",
+        "content_issues": [],
+        "language_issues": [],
+        "ui_issues": [],
+        "scanner_warnings": [],
+        "total_issues": 0
+      },
+      {
+        "page_name": "Sample Report Overview",
+        "url": "https://cashapp.savethechildren.net/SampleReportOverView",
+        "content_issues": [
+          {
+            "type": "Mixed Capitalization",
+            "text": "OverView",
+            "actual": "OverView",
+            "message": "Possible incorrect capitalization in 'OverView'. Check whether the word should use normal title/sentence casing.",
+            "suggestion": "Overview",
+            "expected": "Overview",
+            "page_name": "Sample Report Overview",
+            "url": "https://cashapp.savethechildren.net/SampleReportOverView",
+            "category": "CONTENT / CAPITALIZATION",
+            "element": "OverView",
+            "evidence": "screenshots/issue_Sample_Report_Overview_content___capitalization_1_1790656062676.png"
+          }
+        ],
+        "language_issues": [],
+        "ui_issues": [],
+        "scanner_warnings": [],
+        "total_issues": 1
+      },
+      {
+        "page_name": "Sample Report Overview - Create New Sample",
+        "url": "https://cashapp.savethechildren.net/SampleReportOverView",
+        "content_issues": [],
+        "language_issues": [
+          {
+            "type": "Spelling / Grammar",
+            "text": "Sample Sample",
+            "actual": "Sample Sample",
+            "message": "Possible typo: you repeated a word.",
+            "suggestions": [
+              "Sample"
+            ],
+            "context": "Create New Sample Sample Name Survey Type Select Survey Type Whi...",
+            "offset": 11,
+            "length": 13,
+            "rule": "ENGLISH_WORD_REPEAT_RULE",
+            "category": "MISC",
+            "page_name": "Sample Report Overview - Create New Sample",
+            "url": "https://cashapp.savethechildren.net/SampleReportOverView",
+            "element": "Sample Sample",
+            "suggestion": "Sample",
+            "expected": "Sample"
+          },
+          {
+            "type": "Spelling / Grammar",
+            "text": "Endline",
+            "actual": "Endline",
+            "message": "Possible spelling mistake found.",
+            "suggestions": [
+              "Edline",
+              "End line"
+            ],
+            "context": "...has been sampled by using the Baseline, Endline and PDM Survey Status columns. If you w...",
+            "offset": 502,
+            "length": 7,
+            "rule": "MORFOLOGIK_RULE_EN_US",
+            "category": "TYPOS",
+            "page_name": "Sample Report Overview - Create New Sample",
+            "url": "https://cashapp.savethechildren.net/SampleReportOverView",
+            "element": "Endline",
+            "suggestion": "Edline",
+            "expected": "Edline",
+            "evidence": "screenshots/issue_Sample_Report_Overview_-_Create_New_Sample_spelling___grammar_2_1790656070413.png"
+          }
+        ],
+        "ui_issues": [],
+        "scanner_warnings": [
+          {
+            "type": "Evidence Warning",
+            "message": "Could not capture evidence for Spelling / Grammar: Could not locate exact visible text 'Sample Sample' for screenshot evidence.",
+            "page_name": "Sample Report Overview - Create New Sample",
+            "url": "https://cashapp.savethechildren.net/SampleReportOverView"
+          }
+        ],
+        "total_issues": 2
+      },
+      {
+        "page_name": "Sample Report Approval",
+        "url": "https://cashapp.savethechildren.net/SampleReportApproval",
+        "content_issues": [],
+        "language_issues": [],
+        "ui_issues": [],
+        "scanner_warnings": [],
+        "total_issues": 0
+      },
+      {
+        "page_name": "Project Criteria Setup List",
+        "url": "https://cashapp.savethechildren.net/ProjectCriteriaSetupList",
+        "content_issues": [],
+        "language_issues": [],
+        "ui_issues": [],
+        "scanner_warnings": [],
+        "total_issues": 0
+      },
+      {
+        "page_name": "Project Criteria Setup List - Project Criteria Setup",
+        "url": "https://cashapp.savethechildren.net/ProjectCriteriaSetupList",
+        "content_issues": [],
+        "language_issues": [],
+        "ui_issues": [
+          {
+            "type": "UI Spacing Anomaly",
+            "element": "Save",
+            "actual": "wrapperWidth=31.5px, textWidth=31.5px, left=0.0px, right=0.0px",
+            "expected": "At least 10px horizontal padding on each side of the Save action",
+            "message": "Custom form action 'Save' has reduced horizontal spacing around its label.",
+            "suggestion": "Review the horizontal padding of the Save action against the standard application button spacing.",
+            "padding_left": 0.0,
+            "padding_right": 0.0,
+            "width": 31.46875,
+            "textWidth": 31.45751953125,
+            "target": ".rf-form-header-action-save-only",
+            "page_name": "Project Criteria Setup List - Project Criteria Setup",
+            "url": "https://cashapp.savethechildren.net/ProjectCriteriaSetupList",
+            "category": "BUTTON / UI CONSISTENCY",
+            "text": "Save",
+            "evidence": "screenshots/issue_Project_Criteria_Setup_List_-_Project_Criteria_Setup_button___ui_consistency_1_1790656084024.png"
+          }
+        ],
+        "scanner_warnings": [],
+        "total_issues": 1
+      },
+      {
+        "page_name": "Country Project Mapper List",
+        "url": "https://cashapp.savethechildren.net/CountryProjectMapperList",
+        "content_issues": [],
+        "language_issues": [],
+        "ui_issues": [],
+        "scanner_warnings": [],
+        "total_issues": 0
+      }
+    ],
+    "failure_screenshot": "screenshots/test_cva_core_application_ui_quality_chromium__failure_1790656087961.png"
+  }
+]

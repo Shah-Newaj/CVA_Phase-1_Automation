@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CVA_Phase_1_QA_Automation_Report - BTH QA Report - BTH_QA_Report_2026-09-29_16-58-19-308</title>
+<style>
+:root{font-family:Segoe UI,Arial,sans-serif;color:#202124;background:#f4f6f9}
+*{box-sizing:border-box}body{margin:0}.header{background:#172033;color:#fff;padding:28px 38px}.header h1{margin:0 0 6px;font-size:27px}.header p{margin:0;opacity:.85}.container{max-width:1500px;margin:24px auto;padding:0 20px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 10px #0000000d}.muted{color:#6b7280}.num{font-size:30px;font-weight:700}.pass{color:#16803c}.fail{color:#c62828}.warn{color:#9a6700}
+.toolbar{margin:18px 0;background:#fff;padding:14px;border-radius:12px;display:flex;gap:10px}.toolbar input,.toolbar select{padding:10px 12px;border:1px solid #d7dce2;border-radius:8px}.toolbar input{flex:1}
+.test{background:#fff;margin:12px 0;border-radius:10px;border:1px solid #e2e6eb;overflow:hidden}.test-head{padding:15px 18px;display:flex;justify-content:space-between;cursor:pointer}.test-body{display:none;border-top:1px solid #e8ebef;padding:18px}.test.open .test-body{display:block}.badge{padding:4px 9px;border-radius:999px;font-size:12px;font-weight:700}.badge.pass{background:#e8f5ed}.badge.fail{background:#fdecec}.badge.skip{background:#fff6db}
+.step{border:1px solid #e2e6eb;border-radius:8px;margin:9px 0;overflow:hidden}.step-head{padding:10px 12px;display:flex;justify-content:space-between}.step-body{padding:12px;background:#fafbfc}.validation-title{font-weight:600;margin-bottom:8px}table{width:100%;border-collapse:collapse;margin-top:10px}th,td{text-align:left;padding:9px;border-bottom:1px solid #e5e7eb;font-size:13px;vertical-align:top}th{background:#f3f5f7}.screenshot{max-width:100%;border:1px solid #ddd;border-radius:6px}.error{white-space:pre-wrap;background:#fff1f1;padding:12px;border-radius:8px;color:#9b1c1c;font-size:12px}
+.metadata{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}.meta{background:#f7f8fa;border-radius:8px;padding:10px}.meta b{display:block;font-size:11px;color:#6b7280;margin-bottom:3px}
+.logs{margin:14px 0;background:#f7f8fa;border:1px solid #e2e6eb;border-radius:8px;padding:12px}.step-body>div{white-space:pre-line}.logs h3{margin:0 0 10px;font-size:15px}.log-line{font-family:Consolas,Monaco,monospace;font-size:12px;padding:7px 9px;border-bottom:1px solid #e5e7eb;white-space:pre-wrap;word-break:break-word}.log-line:last-child{border-bottom:0}.log-level{font-weight:700}
+.quality-summary{margin:18px 0;background:#fff;border:1px solid #e2e6eb;border-radius:10px;overflow:hidden}.quality-summary-head{padding:14px 16px;background:#f7f8fa;font-weight:700}.quality-page{border-top:1px solid #e8ebef;padding:14px 16px}.quality-page-head{display:flex;justify-content:space-between;gap:12px;align-items:center}.issue-group{margin-top:10px;border:1px solid #eceff3;border-radius:8px;overflow:hidden}.issue-group h4{margin:0;padding:9px 11px;background:#fafbfc;font-size:13px}.issue{padding:11px;border-top:1px solid #eceff3}.issue:first-child{border-top:0}.issue-title{font-weight:700}.issue-detail{font-size:13px;margin-top:5px;line-height:1.45}.evidence{margin-top:10px}.evidence img{width:100%;max-width:1400px;border:1px solid #d8dde5;border-radius:7px}.warning-box{margin-top:10px;background:#fff8e1;border:1px solid #f0d58a;border-radius:7px;padding:9px;font-size:13px}
+@media(max-width:900px){.cards,.metadata{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.cards,.metadata{grid-template-columns:1fr}.test-head{display:block}.quality-page-head{display:block}}
+</style></head>
+<body>
+<div class="header"><h1>CVA_Phase_1_QA_Automation_Report</h1><p>URL: https://cashapp.savethechildren.net/</p></div>
+<div class="container">
+<div class="cards"><div class="card"><div class="muted">Total Tests</div><div class="num" id="total">0</div></div><div class="card"><div class="muted">Passed</div><div class="num pass" id="passed">0</div></div><div class="card"><div class="muted">Failed</div><div class="num fail" id="failed">0</div></div><div class="card"><div class="muted">Pass Rate</div><div class="num" id="rate">0%</div></div></div>
+<div id="tests"></div></div>
+<script>
+const DATA=[{"nodeid": "Environment: Prod | Country: Niger CVA | Project: BMZ RESA Training | Browser: Chromium", "name": "Spelling and UI Issues", "outcome": "failed", "duration": 44.06881389999762, "error": "page = <Page url='https://cashapp.savethechildren.net/'>\n\n    @pytest.mark.ui_quality\n    def test_cva_core_application_ui_quality(page):\n        \"\"\"\n        Phase-1 full core CVA application UI-quality scan.\n    \n        Navigation follows the same Page Object Model used by the\n        functional CVA automation.\n    \n        Covered pages:\n    \n            1. Dashboard\n    \n            2. Beneficiary List Overview\n            3. Beneficiary List Approval\n    \n            4. Payment List Overview\n            5. Payment List Approval\n            6. Payment Tracking Overview\n    \n            7. Sample Report Overview\n            8. Sample Report Approval\n    \n        Safe modal checks:\n    \n            - Create New Beneficiary List\n            - Create New Payment List\n            - Create New Sample\n            - Project Criteria Setup\n            - Country Project Mapper\n    \n        The test DOES NOT:\n    \n            - create business data\n            - save business data\n            - submit business data\n            - approve business data\n            - delete business data\n    \n        Excluded from this Phase-1 scan:\n    \n            - Fetch Data\n            - Sync Data\n            - Accessibility scanning\n    \n        UI-quality categories:\n    \n            - Mixed capitalization\n            - Spelling / grammar\n            - UI consistency\n            - Visual issue evidence\n        \"\"\"\n    \n        # ========================================================\n        # Page Objects\n        # ========================================================\n    \n        login = LoginPage(page)\n        dashboard = Dashboard(page)\n        beneficiary = BeneficiaryListPage(page)\n        payment = PaymentListPage(page)\n        sampling = SamplingPage(page)\n        configuration = ConfigurationPage(page)\n    \n        scanner = UIQualityScanner(\n            language=LANGUAGE,\n        )\n    \n        page_results: list[ScanResult] = []\n        navigation_errors: list[str] = []\n    \n        # ========================================================\n        # Login\n        # ========================================================\n    \n        with report.step(\n            \"Login for core CVA UI quality scan\"\n        ):\n    \n            login.load()\n    \n            login.login(\"SuperAdmin\", \"Welcome@2\")\n>           report.assert_visible(\n                login.userIcon,\n                \"User icon visible after login\",\n                timeout=15000,\n            )\n\n..\\CVA_Phase-1_Automation_Project_Criteria_ReportFixed\\tests\\ui_quality_tests\\test_cva_core_application_ui_quality.py:127: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\nbth_qa_reporter\\reporter.py:127: in assert_visible\n    return self.assert_playwright(locator, \"visible\", name=name, timeout=timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <bth_qa_reporter.reporter.Reporter object at 0x000001F90BA23380>, locator = <Locator frame=<Frame name= url='https://cashapp.savethechildren.net/'> selector=\"//div[@class='rf-page-header-action-item-username']\">\ncondition = 'visible', name = 'User icon visible after login', timeout = 15000\n\n    def assert_playwright(self, locator, condition: str, name: str, timeout: int = 30000):\n        \"\"\"Run Playwright's built-in expect() assertion and record it in the report.\"\"\"\n        label = name or f\"Playwright assertion: {condition}\"\n        expected = condition\n        actual = \"not satisfied\"\n        try:\n            if condition == \"visible\":\n>               expect(locator).to_be_visible(timeout=timeout)\nE               AssertionError: Locator expected to be visible\nE               Actual value: None\nE               Error: element(s) not found \nE               Call log:\nE                 - Expect \"to_be_visible\" with timeout 15000ms\nE                 - waiting for locator(\"//div[@class='rf-page-header-action-item-username']\")\nE                   - waiting for navigation to finish...\nE                   - navigated to \"https://cashapp.savethechildren.net/\"\n\nbth_qa_reporter\\reporter.py:110: AssertionError", "steps": [{"name": "Login for core CVA UI quality scan", "status": "FAIL", "details": "Locator expected to be visible\nActual value: None\nError: element(s) not found \nCall log:\n  - Expect \"to_be_visible\" with timeout 15000ms\n  - waiting for locator(\"//div[@class='rf-page-header-action-item-username']\")\n    - waiting for navigation to finish...\n    - navigated to \"https://cashapp.savethechildren.net/\"\n", "expected": null, "actual": null, "screenshot": null}, {"name": "User icon visible after login", "status": "FAIL", "details": "Locator expected to be visible\nActual value: None\nError: element(s) not found \nCall log:\n  - Expect \"to_be_visible\" with timeout 15000ms\n  - waiting for locator(\"//div[@class='rf-page-header-action-item-username']\")\n    - waiting for navigation to finish...\n    - navigated to \"https://cashapp.savethechildren.net/\"\n", "expected": "visible", "actual": "not satisfied", "screenshot": "screenshots/Login_for_core_CVA_UI_quality_scan_failure_1790679544453.png"}], "logs": [], "metadata": {"Browser": "chromium", "URL": "https://cashapp.savethechildren.net/"}, "quality_scans": [], "failure_screenshot": "screenshots/Login_for_core_CVA_UI_quality_scan_failure_1790679544453.png"}];
+function esc(x){return String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function cls(s){return s==='passed'||s==='PASS'?'pass':s==='failed'||s==='FAIL'?'fail':s==='skipped'?'skip':''}
+function issueText(issue){
+  const parts=[];
+  if(issue.type) parts.push(`<b>Type:</b> ${esc(issue.type)}`);
+  if(issue.page_name) parts.push(`<b>Page:</b> ${esc(issue.page_name)}`);
+  if(issue.element||issue.text) parts.push(`<b>Element/Text:</b> ${esc(issue.element||issue.text)}`);
+  if(issue.message) parts.push(`<b>Finding:</b> ${esc(issue.message)}`);
+  if(issue.actual!==undefined) parts.push(`<b>Actual:</b> ${esc(issue.actual)}`);
+  if(issue.expected!==undefined) parts.push(`<b>Expected:</b> ${esc(issue.expected)}`);
+  if(issue.suggestion) parts.push(`<b>Suggestion:</b> ${esc(issue.suggestion)}`);
+  if(issue.suggestions&&issue.suggestions.length) parts.push(`<b>Suggestions:</b> ${esc(issue.suggestions.join(', '))}`);
+  if(issue.context) parts.push(`<b>Context:</b> ${esc(issue.context)}`);
+  if(issue.rule) parts.push(`<b>Rule:</b> ${esc(issue.rule)}`);
+  if(issue.url) parts.push(`<b>URL:</b> ${esc(issue.url)}`);
+  return parts.join('<br>');
+}
+function qualityIssues(scan){
+  const groups=[
+    ['CONTENT / CAPITALIZATION',scan.content_issues||[]],
+    ['SPELLING / GRAMMAR',scan.language_issues||[]],
+    ['BUTTON / UI CONSISTENCY',scan.ui_issues||[]]
+  ];
+  return groups.map(([name,issues])=>{
+    if(!issues.length)return '';
+    return `<div class="issue-group"><h4>${esc(name)} — ${issues.length}</h4>${issues.map((issue,i)=>`
+      <div class="issue"><div class="issue-title">Issue ${i+1}</div><div class="issue-detail">${issueText(issue)}</div>
+      ${issue.evidence?`<div class="evidence"><div class="muted"><b>Full-page screenshot — highlighted issue location</b></div><img src="${esc(issue.evidence)}" alt="UI quality evidence"></div>`:''}
+      </div>`).join('')}</div>`;
+  }).join('');
+}
+function qualityHtml(scans){
+  if(!scans||!scans.length)return '';
+  const count=(key)=>scans.reduce((total,scan)=>total+(scan[key]||[]).length,0);
+  return `<div class="quality-summary"><div class="quality-summary-head">CVA UI QUALITY REPORT — Pages Scanned: ${scans.length}; Total Issues: ${scans.reduce((total,scan)=>total+Number(scan.total_issues||0),0)}</div>
+    <div class="quality-page-head" style="padding:12px 16px">
+      <span><b>CONTENT / CAPITALIZATION:</b> ${count('content_issues')}</span>
+      <span><b>SPELLING / GRAMMAR:</b> ${count('language_issues')}</span>
+      <span><b>BUTTON / UI CONSISTENCY:</b> ${count('ui_issues')}</span>
+    </div>${scans.map(scan=>`
+    <div class="quality-page">
+      <div class="quality-page-head"><div><strong>${esc(scan.page_name)}</strong><div class="muted">${esc(scan.url)}</div></div><div><b class="${scan.total_issues?'fail':'pass'}">${scan.total_issues} issue(s)</b> &nbsp; <span class="warn">${(scan.scanner_warnings||[]).length} warning(s)</span></div></div>
+      ${qualityIssues(scan)}
+      ${(scan.scanner_warnings||[]).length?`<div class="warning-box"><b>Scanner warnings:</b><br>${scan.scanner_warnings.map(w=>esc((w.type||'Warning')+': '+(w.message||''))).join('<br>')}</div>`:''}
+      ${!scan.total_issues&&!((scan.scanner_warnings||[]).length)?`<div class="pass" style="margin-top:10px"><b>PASS — no application UI-quality issues detected on this page.</b></div>`:''}
+    </div>`).join('')}</div>`;
+}
+function stepHtml(s){let body='';if(s.details){try{const d=JSON.parse(s.details);if(d.rows){body='<div class="validation-title">Cell-by-cell comparison</div><table><tr><th>Column</th><th>Expected</th><th>Actual</th><th>Status</th></tr>'+d.rows.map(r=>`<tr><td>${esc(r.column)}</td><td>${esc(r.expected)}</td><td>${esc(r.actual)}</td><td class="${cls(r.status)}"><b>${esc(r.status)}</b></td></tr>`).join('')+'</table>'}else body='<div>'+esc(s.details)+'</div>'}catch(e){body='<div>'+esc(s.details)+'</div>'}}
+if(s.expected!==null&&s.expected!==undefined) body+=`<table><tr><th>Expected</th><th>Actual</th><th>Status</th></tr><tr><td>${esc(s.expected)}</td><td>${esc(s.actual)}</td><td class="${s.status==='PASS'?'pass':'fail'}"><b>${esc(s.status)}</b></td></tr></table>`;
+if(s.screenshot) body+=`<div style="margin-top:12px"><div class="muted" style="font-weight:600;margin-bottom:6px">Failure Screenshot</div><img class="screenshot" src="${esc(s.screenshot)}" alt="Failure Screenshot"></div>`;
+return `<div class="step"><div class="step-head"><strong>${esc(s.name)}</strong><span class="${cls(s.status)}"><b>${esc(s.status)}</b></span></div>${body?`<div class="step-body">${body}</div>`:''}</div>`}
+function metadataHtml(m){if(!m||!Object.keys(m).length)return '';return '<div class="metadata">'+Object.entries(m).map(([k,v])=>`<div class="meta"><b>${esc(k)}</b>${esc(v)}</div>`).join('')+'</div>'}
+function render(){
+ const rows=DATA;
+ document.getElementById('tests').innerHTML=rows.map(t=>`<div class="test"><div class="test-head" onclick="this.parentElement.classList.toggle('open')"><div><strong>${esc(t.name)}</strong><div class="muted">${esc(t.nodeid)}</div></div><div><span class="badge ${cls(t.outcome)}">${esc(t.outcome.toUpperCase())}</span> &nbsp; ${Number(t.duration||0).toFixed(2)}s</div></div><div class="test-body">${metadataHtml(t.metadata)}${qualityHtml(t.quality_scans)}${t.error?`<div class="error">${esc(t.error)}</div>`:''}${(t.logs||[]).length?`<div class="logs"><h3>Console / Print Output</h3>${t.logs.map(l=>`<div class="log-line"><span class="log-level">${esc(l.level)}</span> <span>${esc(l.message)}</span></div>`).join('')}</div>`:''}${(t.steps||[]).map(stepHtml).join('')||'<div class="muted">No custom steps recorded.</div>'}</div></div>`).join('');
+ const total=DATA.length,passed=DATA.filter(x=>x.outcome==='passed').length,failed=DATA.filter(x=>x.outcome==='failed').length;
+ document.getElementById('total').textContent=total;document.getElementById('passed').textContent=passed;document.getElementById('failed').textContent=failed;document.getElementById('rate').textContent=total?((passed/total)*100).toFixed(2)+'%':'0%';
+}
+render();
+</script></body></html>

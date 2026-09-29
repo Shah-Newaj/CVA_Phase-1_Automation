@@ -1,0 +1,82 @@
+[
+  {
+    "nodeid": "Environment: Prod | Country: Niger CVA | Project: BMZ RESA Training | Browser: Chromium",
+    "name": "End-to-End CVA Happy Path Test",
+    "outcome": "failed",
+    "duration": 26.466062500010594,
+    "error": "page = <Page url='https://cashapp.savethechildren.net/'>\n\n    def test_cva_happy_path(page):\n    \n        login = LoginPage(page)\n        dashboard = Dashboard(page)\n        beneficiary = BeneficiaryListPage(page)\n        payment = PaymentListPage(page)\n        sampling = SamplingPage(page)\n    \n        with report.step(\"Login\"):\n            login.load()\n            login.login(\"SuperAdmin\", \"Welcome@2\")\n>           report.assert_visible(login.userIcon, \"User icon visible after login\", timeout=15000)\n\n..\\CVA_Phase-1_Automation_Project_Criteria_ReportFixed\\tests\\test_cva_happyPath.py:34: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\nbth_qa_reporter\\reporter.py:127: in assert_visible\n    return self.assert_playwright(locator, \"visible\", name=name, timeout=timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <bth_qa_reporter.reporter.Reporter object at 0x000001EC43573380>, locator = <Locator frame=<Frame name= url='https://cashapp.savethechildren.net/'> selector=\"//div[@class='rf-page-header-action-item-username']\">\ncondition = 'visible', name = 'User icon visible after login', timeout = 15000\n\n    def assert_playwright(self, locator, condition: str, name: str, timeout: int = 30000):\n        \"\"\"Run Playwright's built-in expect() assertion and record it in the report.\"\"\"\n        label = name or f\"Playwright assertion: {condition}\"\n        expected = condition\n        actual = \"not satisfied\"\n        try:\n            if condition == \"visible\":\n>               expect(locator).to_be_visible(timeout=timeout)\nE               AssertionError: Locator expected to be visible\nE               Actual value: None\nE               Error: element(s) not found \nE               Call log:\nE                 - Expect \"to_be_visible\" with timeout 15000ms\nE                 - waiting for locator(\"//div[@class='rf-page-header-action-item-username']\")\nE                   - waiting for\" https://cashapp.savethechildren.net/Account/Login\" navigation to finish...\nE                   - navigated to \"https://cashapp.savethechildren.net/\"\n\nbth_qa_reporter\\reporter.py:110: AssertionError",
+    "steps": [
+      {
+        "name": "Login",
+        "status": "FAIL",
+        "details": "Locator expected to be visible\nActual value: None\nError: element(s) not found \nCall log:\n  - Expect \"to_be_visible\" with timeout 15000ms\n  - waiting for locator(\"//div[@class='rf-page-header-action-item-username']\")\n    - waiting for\" https://cashapp.savethechildren.net/Account/Login\" navigation to finish...\n    - navigated to \"https://cashapp.savethechildren.net/\"\n",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "User icon visible after login",
+        "status": "FAIL",
+        "details": "Locator expected to be visible\nActual value: None\nError: element(s) not found \nCall log:\n  - Expect \"to_be_visible\" with timeout 15000ms\n  - waiting for locator(\"//div[@class='rf-page-header-action-item-username']\")\n    - waiting for\" https://cashapp.savethechildren.net/Account/Login\" navigation to finish...\n    - navigated to \"https://cashapp.savethechildren.net/\"\n",
+        "expected": "visible",
+        "actual": "not satisfied",
+        "screenshot": "screenshots/Login_failure_1790676928752.png"
+      }
+    ],
+    "logs": [],
+    "metadata": {
+      "Browser": "chromium",
+      "URL": "https://cashapp.savethechildren.net/"
+    },
+    "quality_scans": [],
+    "failure_screenshot": "screenshots/Login_failure_1790676928752.png"
+  },
+  {
+    "nodeid": "Environment: Prod | Country: Niger CVA | Project: BMZ RESA Training | Browser: Chromium",
+    "name": "Tile_Data_Validation",
+    "outcome": "failed",
+    "duration": 3.697057900004438,
+    "error": "page = <Page url='about:blank'>\n\n    def test_household_management_dashboard_tiles(page):\n        login = LoginPage(page)\n        dashboard = Dashboard(page)\n        failures = []\n    \n        # Authenticate using the same login flow as the happy-path test.\n        with report.step(\"Login to CVA application\"):\n>           login.load()\n\n..\\CVA_Phase-1_Automation_Project_Criteria_ReportFixed\\tests\\test_dashboard_validations.py:360: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\npages\\login_page.py:16: in load\n    self.page.goto(\"https://cashapp.savethechildren.net/\")\n..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\sync_api\\_generated.py:9054: in goto\n    self._sync(\n..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_page.py:552: in goto\n    return await self._main_frame.goto(**locals_to_params(locals()))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_frame.py:153: in goto\n    await self._channel.send(\n..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:69: in send\n    return await self._connection.wrap_api_call(\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <playwright._impl._connection.Connection object at 0x000001EC44E427B0>, cb = <function Channel.send.<locals>.<lambda> at 0x000001EC452CA3E0>, is_internal = False, title = None\n\n    async def wrap_api_call(\n        self, cb: Callable[[], Any], is_internal: bool = False, title: str = None\n    ) -> Any:\n        if self._api_zone.get():\n            return await cb()\n        task = asyncio.current_task(self._loop)\n        st: List[inspect.FrameInfo] = getattr(\n            task, \"__pw_stack__\", None\n        ) or inspect.stack(0)\n    \n        parsed_st = _extract_stack_trace_information_from_stack(st, is_internal, title)\n        self._api_zone.set(parsed_st)\n        try:\n            return await cb()\n        except Exception as error:\n>           raise rewrite_error(error, f\"{parsed_st['apiName']}: {error}\") from None\nE           playwright._impl._errors.Error: Page.goto: net::ERR_ABORTED; maybe frame was detached?\nE           Call log:\nE             - navigating to \"https://cashapp.savethechildren.net/\", waiting until \"load\"\n\n..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:559: Error",
+    "steps": [
+      {
+        "name": "Login to CVA application",
+        "status": "FAIL",
+        "details": "Page.goto: net::ERR_ABORTED; maybe frame was detached?\nCall log:\n  - navigating to \"https://cashapp.savethechildren.net/\", waiting until \"load\"\n",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      }
+    ],
+    "logs": [],
+    "metadata": {
+      "Browser": "chromium",
+      "URL": "about:blank"
+    },
+    "quality_scans": [],
+    "failure_screenshot": null
+  },
+  {
+    "nodeid": "Environment: Prod | Country: Niger CVA | Project: BMZ RESA Training | Browser: Chromium",
+    "name": "Spelling and UI Issues",
+    "outcome": "failed",
+    "duration": 1.1988696999906097,
+    "error": "page = <Page url='about:blank'>\n\n    @pytest.mark.ui_quality\n    def test_cva_core_application_ui_quality(page):\n        \"\"\"\n        Phase-1 full core CVA application UI-quality scan.\n    \n        Navigation follows the same Page Object Model used by the\n        functional CVA automation.\n    \n        Covered pages:\n    \n            1. Dashboard\n    \n            2. Beneficiary List Overview\n            3. Beneficiary List Approval\n    \n            4. Payment List Overview\n            5. Payment List Approval\n            6. Payment Tracking Overview\n    \n            7. Sample Report Overview\n            8. Sample Report Approval\n    \n        Safe modal checks:\n    \n            - Create New Beneficiary List\n            - Create New Payment List\n            - Create New Sample\n            - Project Criteria Setup\n            - Country Project Mapper\n    \n        The test DOES NOT:\n    \n            - create business data\n            - save business data\n            - submit business data\n            - approve business data\n            - delete business data\n    \n        Excluded from this Phase-1 scan:\n    \n            - Fetch Data\n            - Sync Data\n            - Accessibility scanning\n    \n        UI-quality categories:\n    \n            - Mixed capitalization\n            - Spelling / grammar\n            - UI consistency\n            - Visual issue evidence\n        \"\"\"\n    \n        # ========================================================\n        # Page Objects\n        # ========================================================\n    \n        login = LoginPage(page)\n        dashboard = Dashboard(page)\n        beneficiary = BeneficiaryListPage(page)\n        payment = PaymentListPage(page)\n        sampling = SamplingPage(page)\n        configuration = ConfigurationPage(page)\n    \n        scanner = UIQualityScanner(\n            language=LANGUAGE,\n        )\n    \n        page_results: list[ScanResult] = []\n        navigation_errors: list[str] = []\n    \n        # ========================================================\n        # Login\n        # ========================================================\n    \n        with report.step(\n            \"Login for core CVA UI quality scan\"\n        ):\n    \n>           login.load()\n\n..\\CVA_Phase-1_Automation_Project_Criteria_ReportFixed\\tests\\ui_quality_tests\\test_cva_core_application_ui_quality.py:124: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\npages\\login_page.py:16: in load\n    self.page.goto(\"https://cashapp.savethechildren.net/\")\n..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\sync_api\\_generated.py:9054: in goto\n    self._sync(\n..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_page.py:552: in goto\n    return await self._main_frame.goto(**locals_to_params(locals()))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_frame.py:153: in goto\n    await self._channel.send(\n..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:69: in send\n    return await self._connection.wrap_api_call(\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <playwright._impl._connection.Connection object at 0x000001EC44E427B0>, cb = <function Channel.send.<locals>.<lambda> at 0x000001EC453336A0>, is_internal = False, title = None\n\n    async def wrap_api_call(\n        self, cb: Callable[[], Any], is_internal: bool = False, title: str = None\n    ) -> Any:\n        if self._api_zone.get():\n            return await cb()\n        task = asyncio.current_task(self._loop)\n        st: List[inspect.FrameInfo] = getattr(\n            task, \"__pw_stack__\", None\n        ) or inspect.stack(0)\n    \n        parsed_st = _extract_stack_trace_information_from_stack(st, is_internal, title)\n        self._api_zone.set(parsed_st)\n        try:\n            return await cb()\n        except Exception as error:\n>           raise rewrite_error(error, f\"{parsed_st['apiName']}: {error}\") from None\nE           playwright._impl._errors.Error: Page.goto: net::ERR_ABORTED; maybe frame was detached?\nE           Call log:\nE             - navigating to \"https://cashapp.savethechildren.net/\", waiting until \"load\"\n\n..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:559: Error",
+    "steps": [
+      {
+        "name": "Login for core CVA UI quality scan",
+        "status": "FAIL",
+        "details": "Page.goto: net::ERR_ABORTED; maybe frame was detached?\nCall log:\n  - navigating to \"https://cashapp.savethechildren.net/\", waiting until \"load\"\n",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      }
+    ],
+    "logs": [],
+    "metadata": {
+      "Browser": "chromium",
+      "URL": "about:blank"
+    },
+    "quality_scans": [],
+    "failure_screenshot": null
+  }
+]

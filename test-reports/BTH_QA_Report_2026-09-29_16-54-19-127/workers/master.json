@@ -1,0 +1,34 @@
+[
+  {
+    "nodeid": "Environment: Prod | Country: Niger CVA | Project: BMZ RESA Training | Browser: Chromium",
+    "name": "Spelling and UI Issues",
+    "outcome": "failed",
+    "duration": 43.70104899999569,
+    "error": "page = <Page url='https://cashapp.savethechildren.net/'>\n\n    @pytest.mark.ui_quality\n    def test_cva_core_application_ui_quality(page):\n        \"\"\"\n        Phase-1 full core CVA application UI-quality scan.\n    \n        Navigation follows the same Page Object Model used by the\n        functional CVA automation.\n    \n        Covered pages:\n    \n            1. Dashboard\n    \n            2. Beneficiary List Overview\n            3. Beneficiary List Approval\n    \n            4. Payment List Overview\n            5. Payment List Approval\n            6. Payment Tracking Overview\n    \n            7. Sample Report Overview\n            8. Sample Report Approval\n    \n        Safe modal checks:\n    \n            - Create New Beneficiary List\n            - Create New Payment List\n            - Create New Sample\n            - Project Criteria Setup\n            - Country Project Mapper\n    \n        The test DOES NOT:\n    \n            - create business data\n            - save business data\n            - submit business data\n            - approve business data\n            - delete business data\n    \n        Excluded from this Phase-1 scan:\n    \n            - Fetch Data\n            - Sync Data\n            - Accessibility scanning\n    \n        UI-quality categories:\n    \n            - Mixed capitalization\n            - Spelling / grammar\n            - UI consistency\n            - Visual issue evidence\n        \"\"\"\n    \n        # ========================================================\n        # Page Objects\n        # ========================================================\n    \n        login = LoginPage(page)\n        dashboard = Dashboard(page)\n        beneficiary = BeneficiaryListPage(page)\n        payment = PaymentListPage(page)\n        sampling = SamplingPage(page)\n        configuration = ConfigurationPage(page)\n    \n        scanner = UIQualityScanner(\n            language=LANGUAGE,\n        )\n    \n        page_results: list[ScanResult] = []\n        navigation_errors: list[str] = []\n    \n        # ========================================================\n        # Login\n        # ========================================================\n    \n        with report.step(\n            \"Login for core CVA UI quality scan\"\n        ):\n    \n            login.load()\n    \n            login.login(\"SuperAdmin\", \"Welcome@2\")\n>           report.assert_visible(\n                login.userIcon,\n                \"User icon visible after login\",\n                timeout=15000,\n            )\n\n..\\CVA_Phase-1_Automation_Project_Criteria_ReportFixed\\tests\\ui_quality_tests\\test_cva_core_application_ui_quality.py:127: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\nbth_qa_reporter\\reporter.py:127: in assert_visible\n    return self.assert_playwright(locator, \"visible\", name=name, timeout=timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <bth_qa_reporter.reporter.Reporter object at 0x000001889A203380>, locator = <Locator frame=<Frame name= url='https://cashapp.savethechildren.net/'> selector=\"//div[@class='rf-page-header-action-item-username']\">\ncondition = 'visible', name = 'User icon visible after login', timeout = 15000\n\n    def assert_playwright(self, locator, condition: str, name: str, timeout: int = 30000):\n        \"\"\"Run Playwright's built-in expect() assertion and record it in the report.\"\"\"\n        label = name or f\"Playwright assertion: {condition}\"\n        expected = condition\n        actual = \"not satisfied\"\n        try:\n            if condition == \"visible\":\n>               expect(locator).to_be_visible(timeout=timeout)\nE               AssertionError: Locator expected to be visible\nE               Actual value: None\nE               Error: element(s) not found \nE               Call log:\nE                 - Expect \"to_be_visible\" with timeout 15000ms\nE                 - waiting for locator(\"//div[@class='rf-page-header-action-item-username']\")\nE                   - waiting for\" https://cashapp.savethechildren.net/Account/Login\" navigation to finish...\n\nbth_qa_reporter\\reporter.py:110: AssertionError",
+    "steps": [
+      {
+        "name": "Login for core CVA UI quality scan",
+        "status": "FAIL",
+        "details": "Locator expected to be visible\nActual value: None\nError: element(s) not found \nCall log:\n  - Expect \"to_be_visible\" with timeout 15000ms\n  - waiting for locator(\"//div[@class='rf-page-header-action-item-username']\")\n    - waiting for\" https://cashapp.savethechildren.net/Account/Login\" navigation to finish...\n",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "User icon visible after login",
+        "status": "FAIL",
+        "details": "Locator expected to be visible\nActual value: None\nError: element(s) not found \nCall log:\n  - Expect \"to_be_visible\" with timeout 15000ms\n  - waiting for locator(\"//div[@class='rf-page-header-action-item-username']\")\n    - waiting for\" https://cashapp.savethechildren.net/Account/Login\" navigation to finish...\n",
+        "expected": "visible",
+        "actual": "not satisfied",
+        "screenshot": "screenshots/Login_for_core_CVA_UI_quality_scan_failure_1790679300839.png"
+      }
+    ],
+    "logs": [],
+    "metadata": {
+      "Browser": "chromium",
+      "URL": "https://cashapp.savethechildren.net/"
+    },
+    "quality_scans": [],
+    "failure_screenshot": "screenshots/Login_for_core_CVA_UI_quality_scan_failure_1790679300839.png"
+  }
+]

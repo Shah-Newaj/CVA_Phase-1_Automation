@@ -53,4 +53,3 @@ class BeneficiaryListPage:
         self.page.wait_for_url("https://cashapp.savethechildren.net/BeneficiaryListApproval")
         self.page.wait_for_load_state("networkidle")
         self.page.wait_for_timeout(10000)
-

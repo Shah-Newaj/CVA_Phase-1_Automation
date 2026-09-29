@@ -1,0 +1,151 @@
+[
+  {
+    "nodeid": "Environment: Prod | Country: Niger CVA | Project: BMZ RESA Training | Browser: Chromium",
+    "name": "End-to-End CVA Happy Path Test",
+    "outcome": "passed",
+    "duration": 662.3865499000094,
+    "error": "",
+    "steps": [
+      {
+        "name": "Login",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "User icon visible after login",
+        "status": "PASS",
+        "details": "Playwright assertion passed: visible",
+        "expected": "visible",
+        "actual": "visible",
+        "screenshot": null
+      },
+      {
+        "name": "Verify login with bth_qa_reporter function",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Select Country & Project",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Country dropdown enabled",
+        "status": "PASS",
+        "details": "Playwright assertion passed: enabled",
+        "expected": "enabled",
+        "actual": "enabled",
+        "screenshot": null
+      },
+      {
+        "name": "Create Beneficiary List",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Approve Beneficiary List",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Create Payment List",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Approve Payment List",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Payment Tracking",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Create Sample",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Approve Sample",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      }
+    ],
+    "logs": [
+      {
+        "level": "PRINT",
+        "message": "Username: & Pass:  admin 12345"
+      },
+      {
+        "level": "PRINT",
+        "message": "Beneficiary List ID:  K7L4YWSA"
+      },
+      {
+        "level": "PRINT",
+        "message": "Received ID: K7L4YWSA"
+      },
+      {
+        "level": "PRINT",
+        "message": "Received ID: K7L4YWSA"
+      },
+      {
+        "level": "PRINT",
+        "message": "R9UH1ZI6"
+      },
+      {
+        "level": "PRINT",
+        "message": "Payment List ID:  R9UH1ZI6"
+      },
+      {
+        "level": "PRINT",
+        "message": "Received ID: R9UH1ZI6"
+      },
+      {
+        "level": "PRINT",
+        "message": "Received ID: R9UH1ZI6"
+      },
+      {
+        "level": "PRINT",
+        "message": "Received ID: K7L4YWSA"
+      }
+    ],
+    "metadata": {
+      "Browser": "chromium",
+      "URL": "https://cashapp.savethechildren.net/SampleReportApproval"
+    },
+    "quality_scans": [],
+    "failure_screenshot": null
+  }
+]

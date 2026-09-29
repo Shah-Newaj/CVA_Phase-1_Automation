@@ -8,7 +8,9 @@ from playwright.sync_api import expect
 class SamplingPage:
     def __init__(self, page: Page):
         self.page = page
-        self.sampling = page.get_by_text("Sampling Management")
+        self.sampling = page.locator("a.nav-link").filter(
+            has_text="Sampling Management"
+        ).first
         self.sample_report_overview = page.get_by_role("link", name="Sample Report Overview")
         self.sample_report_approval = page.get_by_role("link", name="Sample Report Approval")
         self.create_btn = page.get_by_role("button", name="Create New Sample")
@@ -82,5 +84,3 @@ class SamplingPage:
         self.page.wait_for_url("https://cashapp.savethechildren.net/SampleReportApproval")
         self.page.wait_for_load_state("networkidle")
         self.page.wait_for_timeout(10000)
-
-

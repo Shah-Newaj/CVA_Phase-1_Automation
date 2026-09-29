@@ -92,6 +92,14 @@ After execution, open the timestamped HTML file inside the newly created `test-r
 
     pytest -v -s .\tests\test_dashboard_validations.py --headed
 
+### Command to run the project - spelling and ui issues check...
+
+    pytest -v -s .\tests\ui_quality_tests\test_cva_core_application_ui_quality.py --headed 
+
+### Command to run the project - tests file all together...
+
+    pytest -v -s .\tests\test_cva_happyPath.py .\tests\test_dashboard_validations.py  .\tests\ui_quality_tests\test_cva_core_application_ui_quality.py --headed   
+
 
 ### Used Packages in this Project...
 
@@ -312,3 +320,57 @@ fails, the step becomes FAIL, the exception is recorded, a failure screenshot
 is attempted, and the original exception is re-raised so pytest still fails.
 
 Normal Playwright `expect()` behavior is preserved; no monkey-patching is used.
+
+## Phase 1 - Baseline-Free UI Quality Scanner
+
+The framework now includes a first-phase UI quality scanner that does not require
+a "correct" baseline screenshot. This is intended for finding defects that may
+already exist in a first release.
+
+Current checks include:
+
+* Suspicious mixed capitalization, e.g. `OverView`
+* Spelling and grammar checks through LanguageTool
+* Button height/font-size checks
+* Button shape/style outlier detection
+* Reuses the existing BTH QA reporter
+* Accessibility checks through axe-core
+* Fails the Pytest test when UI-quality issues are detected
+
+### Install the additional free UI-quality dependency
+
+```powershell
+pip install axe-playwright-python
+```
+
+`axe-playwright-python` provides the Python Playwright integration for axe-core.
+
+### Run the UI quality scan
+
+Set credentials in the shell rather than storing them in the test:
+
+```powershell
+$env:CVA_UI_USERNAME="your-user"
+$env:CVA_UI_PASSWORD="your-password"
+$env:UI_QUALITY_LANGUAGE="en-US"
+```
+
+Then run:
+
+```powershell
+pytest -m ui_quality -v -s --bth-report-dir=test-reports
+```
+
+The UI-quality findings are written to the existing BTH QA HTML report under
+**Console / Print Output**.
+
+For a French page, use:
+
+```powershell
+$env:UI_QUALITY_LANGUAGE="fr"
+```
+
+The scanner is intentionally baseline-free in Phase 1. Visual screenshot
+regression/baseline comparison can be added later after the application's
+initial UI defects have been cleaned up.
+

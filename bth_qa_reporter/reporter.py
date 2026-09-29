@@ -35,6 +35,7 @@ class Reporter:
             "steps": [],
             "logs": [],
             "metadata": {},
+            "quality_scans": [],
             "failure_screenshot": None,
         }
         self.results[nodeid] = self.current_test
@@ -225,6 +226,280 @@ class Reporter:
             self._add(f"Screenshot: {name}", "INFO", screenshot=rel)
 
         return str(path)
+
+    def add_quality_scan(self, result):
+        """Store a serializable UI-quality scan result for the HTML report."""
+        if self.current_test is None:
+            return
+
+        def issue_copy(issue):
+            return dict(issue)
+
+        scan = {
+            "page_name": result.page_name,
+            "url": result.url,
+            "content_issues": [issue_copy(x) for x in result.content_issues],
+            "language_issues": [issue_copy(x) for x in result.language_issues],
+            "ui_issues": [issue_copy(x) for x in result.ui_issues],
+            "scanner_warnings": [
+                issue_copy(x)
+                for x in getattr(result, "scanner_warnings", [])
+            ],
+            "total_issues": result.total_issues,
+        }
+        self.current_test.setdefault("quality_scans", []).append(scan)
+
+    def attach_issue_screenshot(
+        self,
+        page,
+        issue: dict,
+        category: str,
+        index: int,
+        page_name: str,
+    ):
+        """        Capture full-page evidence with URL and exact issue highlighted.
+
+        The page URL is shown in the report; the screenshot stays unobstructed
+        so the highlighted element remains visible.
+        """
+        if not self.current_test:
+            return None
+
+        safe_page = "".join(
+            c if c.isalnum() or c in "._-" else "_"
+            for c in page_name
+        )[:80]
+        safe_category = "".join(
+            c if c.isalnum() or c in "._-" else "_"
+            for c in category.lower()
+        )[:40]
+        filename = (
+            f"issue_{safe_page}_{safe_category}_{index}_"
+            f"{int(time.time() * 1000)}.png"
+        )
+        path = self.output_dir / "screenshots" / filename
+        rel = f"screenshots/{filename}"
+
+        issue_type = str(issue.get("type", "UI Quality Issue"))
+        issue_text = str(issue.get("element") or issue.get("text") or "<n/a>")
+        message = str(issue.get("message") or "")
+        suggestion = str(issue.get("suggestion") or "")
+        target = issue.get("target")
+
+        payload = {
+            "url": page.url,
+            "page_name": page_name,
+            "category": category,
+            "issue_type": issue_type,
+            "issue_text": issue_text,
+            "message": message,
+            "suggestion": suggestion,
+            "target": target[0] if isinstance(target, list) and target else target,
+        }
+
+        try:
+            highlighted = page.evaluate(
+                """
+                (data) => {
+                    const oldStyle = document.getElementById('__bth_issue_style');
+                    const isVisible = el => {
+                        if (!el) return false;
+                        for (let current = el; current; current = current.parentElement) {
+                            const style = getComputedStyle(current);
+                            if (style.display === 'none'
+                                || style.visibility === 'hidden'
+                                || Number(style.opacity) === 0
+                                || current.getAttribute('aria-hidden') === 'true'
+                                || current.hasAttribute('inert')) return false;
+                        }
+                        return el.getClientRects().length > 0;
+                    };
+                    if (oldStyle) oldStyle.remove();
+                    document.querySelectorAll('[data-bth-issue-highlight="1"]').forEach(el => {
+                        el.removeAttribute('data-bth-issue-highlight');
+                        el.style.removeProperty('outline');
+                        el.style.removeProperty('outline-offset');
+                        el.style.removeProperty('box-shadow');
+                    });
+
+                    let target = null;
+                    if (data.target) {
+                        try { target = document.querySelector(data.target); } catch (_) {}
+                    }
+
+                    const wanted = (data.issue_text || '').trim();
+                    let issueRange = null;
+                    if (!target && wanted) {
+                        const walker = document.createTreeWalker(
+                            document.querySelector('[data-bth-quality-scan-root]') || document.body,
+                            NodeFilter.SHOW_TEXT,
+                            {acceptNode: node => {
+                                const value = (node.nodeValue || '');
+                                const element = node.parentElement;
+                                return isVisible(element)
+                                    && !element.closest(
+                                        'nav, aside, [role="navigation"], a.nav-link, tbody, tr, [role="row"], .table-rf-row'
+                                    )
+                                    && value.toLowerCase().includes(wanted.toLowerCase())
+                                    ? NodeFilter.FILTER_ACCEPT
+                                    : NodeFilter.FILTER_REJECT;
+                            }}
+                        );
+                        const matches = [];
+                        let node;
+                        while ((node = walker.nextNode())) {
+                            const value = node.nodeValue || '';
+                            const start = value.toLowerCase().indexOf(wanted.toLowerCase());
+                            if (start < 0) continue;
+                            const before = value[start - 1] || '';
+                            const after = value[start + wanted.length] || '';
+                            if (/[a-z0-9_]/i.test(before)
+                                || /[a-z0-9_]/i.test(after)) continue;
+                            const parent = node.parentElement;
+                            const nav = parent.closest(
+                                    'nav, aside, [role="navigation"], a.nav-link'
+                            );
+                            const heading = parent.closest(
+                                    'h1,h2,h3,h4,h5,h6,[role="heading"]'
+                            );
+                            const exactParent =
+                                    (parent.innerText || '').trim().toLowerCase()
+                                    === wanted.toLowerCase();
+                            matches.push({
+                                    node,
+                                    start,
+                                    score: (heading ? 100 : 0)
+                                        + (exactParent ? 20 : 0)
+                                        - (nav ? 100 : 0)
+                                        - (parent.innerText || '').trim().length / 100
+                            });
+                        }
+                        matches.sort((a, b) => b.score - a.score);
+                        const match = matches[0];
+                        const textNode = match && match.node;
+                        if (textNode) {
+                            issueRange = document.createRange();
+                            issueRange.setStart(textNode, match.start);
+                            issueRange.setEnd(textNode, match.start + wanted.length);
+                            target = textNode.parentElement;
+                        }
+                    }
+
+                    if (!target && wanted) {
+                        const candidates = Array.from(document.querySelectorAll(
+                            'button,a,input,label,span,div,h1,h2,h3,h4,h5,h6,td,th,p'
+                        ));
+                        const scanRoot = document.querySelector(
+                            '[data-bth-quality-scan-root]'
+                        );
+                        target = candidates
+                            .filter(el => {
+                                const text = (el.innerText || el.value || el.getAttribute('aria-label') || '').trim();
+                                if (!isVisible(el)
+                                    || (scanRoot && !scanRoot.contains(el))
+                                    || el.closest('nav, aside, [role="navigation"], a.nav-link, tbody, tr, [role="row"], .table-rf-row')
+                                    || !text
+                                    || text.length > Math.max(160, wanted.length * 8)) return false;
+                                const index = text.toLowerCase().indexOf(wanted.toLowerCase());
+                                if (index < 0) return false;
+                                const before = text[index - 1] || '';
+                                const after = text[index + wanted.length] || '';
+                                return !/[a-z0-9_]/i.test(before)
+                                    && !/[a-z0-9_]/i.test(after);
+                            })
+                            .sort((a,b) => {
+                                const at = (a.innerText || a.value || '').trim().length;
+                                const bt = (b.innerText || b.value || '').trim().length;
+                                return at - bt;
+                            })[0] || null;
+                    }
+
+                    const style = document.createElement('style');
+                    style.id = '__bth_issue_style';
+                    style.textContent = `
+                        [data-bth-issue-highlight="1"] {
+                            outline: 4px solid #e11d48 !important;
+                            outline-offset: 4px !important;
+                            box-shadow: 0 0 0 8px rgba(225,29,72,.22) !important;
+                            position: relative !important;
+                            z-index: 2147483640 !important;
+                        }
+                    `;
+                    document.head.appendChild(style);
+
+                    if (target) {
+                        target.setAttribute('data-bth-issue-highlight', '1');
+                        target.scrollIntoView({block: 'center', inline: 'center'});
+                    }
+                    if (issueRange && window.CSS && CSS.highlights && window.Highlight) {
+                        const style = document.createElement('style');
+                        style.id = '__bth_issue_text_style';
+                        style.textContent = `
+                            ::highlight(bthIssueText) {
+                                background: #fff200;
+                                color: #111;
+                                text-decoration: underline 3px #e11d48;
+                            }
+                        `;
+                        document.head.appendChild(style);
+                        CSS.highlights.set('bthIssueText', new Highlight(issueRange));
+                    }
+                    return Boolean(target);
+                }
+                """,
+                payload,
+            )
+
+            if not highlighted:
+                raise LookupError(
+                    f"Could not locate exact visible text {issue_text!r} "
+                    "for screenshot evidence."
+                )
+
+            screenshot_error = None
+            for attempt in range(2):
+                try:
+                    page.screenshot(
+                        path=str(path),
+                        full_page=True,
+                        timeout=30000,
+                    )
+                    if not path.is_file() or path.stat().st_size == 0:
+                        raise OSError("Screenshot file is missing or empty.")
+                    screenshot_error = None
+                    break
+                except Exception as exc:
+                    screenshot_error = exc
+                    if attempt == 0:
+                        page.wait_for_timeout(500)
+
+            if screenshot_error is not None:
+                raise screenshot_error
+        finally:
+            try:
+                page.evaluate(
+                    """
+                    () => {
+                        const style = document.getElementById('__bth_issue_style');
+                        const textStyle = document.getElementById('__bth_issue_text_style');
+                        if (style) style.remove();
+                        if (textStyle) textStyle.remove();
+                        if (window.CSS && CSS.highlights) {
+                            CSS.highlights.delete('bthIssueText');
+                        }
+                        document.querySelectorAll('[data-bth-issue-highlight="1"]').forEach(el => {
+                            el.removeAttribute('data-bth-issue-highlight');
+                            el.style.removeProperty('outline');
+                            el.style.removeProperty('outline-offset');
+                            el.style.removeProperty('box-shadow');
+                        });
+                    }
+                    """
+                )
+            except Exception:
+                pass
+
+        return rel
 
     def _add(self, name, status, details="", expected=None, actual=None, screenshot=None, return_step=False):
         if self.current_test is None:

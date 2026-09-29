@@ -1,0 +1,6 @@
+pytest>=9.0
+pytest-playwright>=0.7
+playwright>=1.55
+requests>=2.32
+truststore>=0.10
+axe-playwright-python>=0.1
