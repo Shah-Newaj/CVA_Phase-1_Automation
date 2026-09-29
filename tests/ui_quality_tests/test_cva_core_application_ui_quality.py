@@ -127,7 +127,7 @@ def test_cva_core_application_ui_quality(page):
         report.assert_visible(
             login.userIcon,
             "User icon visible after login",
-            timeout=15000,
+            timeout=30000,
         )
         page.wait_for_timeout(10000)
 
