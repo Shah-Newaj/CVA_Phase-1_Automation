@@ -43,3 +43,30 @@ def test_assert_visible_records_fail_and_raises(monkeypatch):
     step = reporter.results["case:visible_fail"]["steps"][-1]
     assert step["status"] == "FAIL"
     assert "Element not visible" in step["details"]
+
+
+def test_step_records_duration_on_pass():
+    reporter = Reporter()
+    reporter.start_test("case:timed_step", "timed step")
+
+    with reporter.step("Login"):
+        pass
+
+    step = reporter.results["case:timed_step"]["steps"][-1]
+    assert step["status"] == "PASS"
+    assert isinstance(step["duration"], float)
+    assert step["duration"] >= 0
+
+
+def test_step_records_duration_on_failure():
+    reporter = Reporter()
+    reporter.start_test("case:failed_timed_step", "failed timed step")
+
+    with pytest.raises(RuntimeError, match="step failed"):
+        with reporter.step("Create Beneficiary List"):
+            raise RuntimeError("step failed")
+
+    step = reporter.results["case:failed_timed_step"]["steps"][-1]
+    assert step["status"] == "FAIL"
+    assert isinstance(step["duration"], float)
+    assert step["duration"] >= 0

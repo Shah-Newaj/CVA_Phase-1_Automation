@@ -4,7 +4,12 @@ import os
 from urllib.parse import urljoin
 
 from bth_qa_reporter import report
-from pages.dashboard_page import Dashboard
+from pages.dashboard_page import (
+    COUNTRY_NAME,
+    DOMAIN_NAME,
+    PROJECT_NAME,
+    Dashboard,
+)
 from pages.login_page import LoginPage
 
 
@@ -12,7 +17,10 @@ from pages.login_page import LoginPage
 REPORT_TITLE = "CVA_Phase_1_QA_Automation_Report"
 REPORT_SUBTITLE = "URL: https://cashapp.savethechildren.net/"
 REPORT_TEST_NAME = "Tile_Data_Validation"
-REPORT_TEST_FILE_NAME = "Environment: Prod | Country: Niger CVA | Project: BMZ RESA Training | Browser: Chromium"
+REPORT_TEST_FILE_NAME = (
+    f"Environment: Prod | Country: {COUNTRY_NAME} | Project: {PROJECT_NAME} "
+    "| Browser: Chromium"
+)
 os.environ["BTH_REPORT_TITLE"] = REPORT_TITLE
 os.environ["BTH_REPORT_SUBTITLE"] = REPORT_SUBTITLE
 
@@ -20,9 +28,9 @@ os.environ["BTH_REPORT_SUBTITLE"] = REPORT_SUBTITLE
 HOUSEHOLD_DATA_URL = "https://cashapp.savethechildren.net/MasterHouseholdData"
 BENEFICIARY_OVERVIEW_URL = "https://cashapp.savethechildren.net/BeneficiaryListOverView"
 PAYMENT_TRACKING_URL = "https://cashapp.savethechildren.net/PaymentTrackingOverview"
-EXPECTED_DOMAIN = "sci-co-niger"
-EXPECTED_COUNTRY = "Niger CVA"
-EXPECTED_PROJECT = "BMZ RESA Training"
+EXPECTED_DOMAIN = DOMAIN_NAME
+EXPECTED_COUNTRY = COUNTRY_NAME
+EXPECTED_PROJECT = PROJECT_NAME
 
 # Record a tile result and attach evidence without stopping later checks.
 def _record_tile_check(page, failures, name, expected, actual):
@@ -366,8 +374,10 @@ def test_household_management_dashboard_tiles(page):
         page.wait_for_timeout(10000)
         report.assert_enabled(dashboard.domain_drp, "Domain dropdown enabled")
         report.assert_enabled(dashboard.country_drp, "Country dropdown enabled")
+        dashboard.select_domain()
+        page.wait_for_load_state("networkidle")
         dashboard.select_country()
-        page.wait_for_timeout(1000)
+        page.wait_for_load_state("networkidle")
         report.assert_enabled(dashboard.project_drp, "Project dropdown enabled")
         dashboard.select_project()
         page.wait_for_load_state("networkidle")

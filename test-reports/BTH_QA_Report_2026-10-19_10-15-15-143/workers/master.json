@@ -1,0 +1,58 @@
+[
+  {
+    "nodeid": "Environment: Prod | Country: Niger CVA | Project: BMZ RESA Training | Browser: Chromium",
+    "name": "End-to-End CVA Happy Path Test",
+    "outcome": "passed",
+    "duration": 33.99642329989001,
+    "error": "",
+    "steps": [
+      {
+        "name": "Login",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "User icon visible after login",
+        "status": "PASS",
+        "details": "Playwright assertion passed: visible",
+        "expected": "visible",
+        "actual": "visible",
+        "screenshot": null
+      },
+      {
+        "name": "Verify login with bth_qa_reporter function",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Select Domain",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Domain dropdown enabled",
+        "status": "PASS",
+        "details": "Playwright assertion passed: enabled",
+        "expected": "enabled",
+        "actual": "enabled",
+        "screenshot": null
+      }
+    ],
+    "logs": [],
+    "metadata": {
+      "Browser": "chromium",
+      "URL": "https://cashapp.savethechildren.net/"
+    },
+    "quality_scans": [],
+    "failure_screenshot": null
+  }
+]

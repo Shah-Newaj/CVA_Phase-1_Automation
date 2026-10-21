@@ -7,7 +7,7 @@ import pytest
 
 from bth_qa_reporter import report
 
-from pages.dashboard_page import Dashboard
+from pages.dashboard_page import COUNTRY_NAME, PROJECT_NAME, Dashboard, DOMAIN_NAME
 from pages.login_page import LoginPage
 from pages.beneficiaryList_page import BeneficiaryListPage
 from pages.paymentList_page import PaymentListPage
@@ -21,7 +21,10 @@ from ui_quality.scanner import ScanResult, UIQualityScanner
 REPORT_TITLE = "CVA_Phase_1_QA_Automation_Report"
 REPORT_SUBTITLE = "URL: https://cashapp.savethechildren.net/"
 REPORT_TEST_NAME = "Spelling and UI Issues"
-REPORT_TEST_FILE_NAME = "Environment: Prod | Country: Niger CVA | Project: BMZ RESA Training | Browser: Chromium"
+REPORT_TEST_FILE_NAME = (
+    f"Environment: Prod | Country: {COUNTRY_NAME} | Project: {PROJECT_NAME} "
+    "| Browser: Chromium"
+)
 os.environ["BTH_REPORT_TITLE"] = REPORT_TITLE
 os.environ["BTH_REPORT_SUBTITLE"] = REPORT_SUBTITLE
 
@@ -130,6 +133,34 @@ def test_cva_core_application_ui_quality(page):
             timeout=30000,
         )
         page.wait_for_timeout(10000)
+
+    # ========================================================
+    # Select Domain
+    # ========================================================
+
+    with report.step("Select Domain"):
+
+        try:
+
+            report.assert_enabled(
+                dashboard.domain_drp,
+                "Domain dropdown enabled",
+            )
+            dashboard.select_domain()
+
+            page.wait_for_timeout(1000)
+
+        except Exception as exc:
+
+            navigation_errors.append(
+                f"Select Domain failed: {exc}"
+            )
+
+            report.log(
+                f"Select Domain failed: {exc}",
+                "UI-QUALITY",
+            )
+
 
     # ========================================================
     # Select Country

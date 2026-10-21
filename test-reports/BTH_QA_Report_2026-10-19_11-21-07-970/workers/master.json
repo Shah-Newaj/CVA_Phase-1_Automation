@@ -1,0 +1,111 @@
+[
+  {
+    "nodeid": "Environment: Prod | Country: Ethiopia CVA | Project: Ethiopia - Trigger-based Anticipatory Action Pilot | Browser: Chromium",
+    "name": "End-to-End CVA Happy Path Test",
+    "outcome": "failed",
+    "duration": 231.14159380015917,
+    "error": "page = <Page url='https://cashapp.savethechildren.net/BeneficiaryListApproval'>\n\n    def test_cva_happy_path(page):\n    \n        login = LoginPage(page)\n        dashboard = Dashboard(page)\n        beneficiary = BeneficiaryListPage(page)\n        payment = PaymentListPage(page)\n        sampling = SamplingPage(page)\n    \n        with report.step(\"Login\"):\n            login.load()\n            login.login(\"SuperAdmin\", \"Welcome@2\")\n            report.assert_visible(login.userIcon, \"User icon visible after login\", timeout=15000)\n    \n        with report.step(\"Verify login with bth_qa_reporter function\"):\n            expect(page.locator(\"//div[@class='rf-page-header-action-item-username']\")).to_be_visible()\n    \n        with report.step(\"Select Domain\"):\n            page.wait_for_timeout(10000)\n            report.assert_enabled(dashboard.domain_drp, \"Domain dropdown enabled\")\n            dashboard.select_domain()\n            page.wait_for_timeout(1000)\n            page.wait_for_load_state(\"networkidle\")\n    \n        with report.step(\"Select Country & Project\"):\n            page.wait_for_timeout(1000)\n            report.assert_enabled(dashboard.country_drp, \"Country dropdown enabled\")\n            dashboard.select_country()\n            page.wait_for_timeout(1000)\n            dashboard.select_project()\n            page.wait_for_load_state(\"networkidle\")\n    \n        with report.step(\"Create Beneficiary List\"):\n            beneficiary_list_id = beneficiary.create_beneficiary(\"test\")\n            print(\"Beneficiary List ID: \", beneficiary_list_id)\n            login.logout()\n    \n        with report.step(\"Approve Beneficiary List\"):\n            login.login2(\"shah.ca\", \"WelcomeCVA@2026\")\n            beneficiary.approve_beneficiary(beneficiary_list_id)\n    \n        with report.step(\"Create Payment List\"):\n>           payment_list_id = payment.create_payment(beneficiary_list_id)\n                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests\\test_cva_happyPath.py:71: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <pages.paymentList_page.PaymentListPage object at 0x00000224506916A0>\nbeneficiary_list_id = 'LVFBO7YH'\n\n    def create_payment(self, beneficiary_list_id):\n        print(f\"Received ID: {beneficiary_list_id}\")\n        expect(self.page.locator(\".preloader-rf-backarea\")).to_be_hidden(\n            timeout=60000\n        )\n        if not self.paymentlist_overview.is_visible():\n            self.paymentlist.click()\n>           expect(self.paymentlist).to_have_attribute(\n                \"rf-menu-expanded\", \"\", timeout=60000\n            )\nE           AssertionError: Locator expected to have attribute ''\nE           Actual value: None \nE           Call log:\nE             - Expect \"to_have_attribute\" with timeout 60000ms\nE             - waiting for locator(\"a.nav-link\").filter(has_text=\"Payment List Management\")\nE               43 \u00d7 locator resolved to <a aria-current=\"\" class=\"nav-link\">\u2026</a>\nE                  - unexpected value \"null\"\nE               - waiting for\" https://cashapp.savethechildren.net/BeneficiaryListApproval\" navigation to finish...\nE               - navigated to \"https://cashapp.savethechildren.net/BeneficiaryListApproval\"\nE               11 \u00d7 locator resolved to <a aria-current=\"\" class=\"nav-link\">\u2026</a>\nE                  - unexpected value \"null\"\n\npages\\paymentList_page.py:64: AssertionError",
+    "steps": [
+      {
+        "name": "Login",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "User icon visible after login",
+        "status": "PASS",
+        "details": "Playwright assertion passed: visible",
+        "expected": "visible",
+        "actual": "visible",
+        "screenshot": null
+      },
+      {
+        "name": "Verify login with bth_qa_reporter function",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Select Domain",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Domain dropdown enabled",
+        "status": "PASS",
+        "details": "Playwright assertion passed: enabled",
+        "expected": "enabled",
+        "actual": "enabled",
+        "screenshot": null
+      },
+      {
+        "name": "Select Country & Project",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Country dropdown enabled",
+        "status": "PASS",
+        "details": "Playwright assertion passed: enabled",
+        "expected": "enabled",
+        "actual": "enabled",
+        "screenshot": null
+      },
+      {
+        "name": "Create Beneficiary List",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Approve Beneficiary List",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Create Payment List",
+        "status": "FAIL",
+        "details": "Locator expected to have attribute ''\nActual value: None \nCall log:\n  - Expect \"to_have_attribute\" with timeout 60000ms\n  - waiting for locator(\"a.nav-link\").filter(has_text=\"Payment List Management\")\n    43 \u00d7 locator resolved to <a aria-current=\"\" class=\"nav-link\">\u2026</a>\n       - unexpected value \"null\"\n    - waiting for\" https://cashapp.savethechildren.net/BeneficiaryListApproval\" navigation to finish...\n    - navigated to \"https://cashapp.savethechildren.net/BeneficiaryListApproval\"\n    11 \u00d7 locator resolved to <a aria-current=\"\" class=\"nav-link\">\u2026</a>\n       - unexpected value \"null\"\n",
+        "expected": null,
+        "actual": null,
+        "screenshot": "screenshots/Create_Payment_List_failure_1792387500151.png"
+      }
+    ],
+    "logs": [
+      {
+        "level": "PRINT",
+        "message": "Beneficiary List ID:  LVFBO7YH"
+      },
+      {
+        "level": "PRINT",
+        "message": "Received ID: LVFBO7YH"
+      },
+      {
+        "level": "PRINT",
+        "message": "Received ID: LVFBO7YH"
+      }
+    ],
+    "metadata": {
+      "Browser": "chromium",
+      "URL": "https://cashapp.savethechildren.net/BeneficiaryListApproval"
+    },
+    "quality_scans": [],
+    "failure_screenshot": "screenshots/Create_Payment_List_failure_1792387500151.png"
+  }
+]

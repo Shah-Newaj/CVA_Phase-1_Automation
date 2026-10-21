@@ -1,0 +1,63 @@
+[
+  {
+    "nodeid": "Environment: Prod | Country: Niger CVA | Project: BMZ RESA Training | Browser: Chromium",
+    "name": "End-to-End CVA Happy Path Test",
+    "outcome": "failed",
+    "duration": 85.3819560999982,
+    "error": "page = <Page url='https://cashapp.savethechildren.net/'>\n\n    def test_cva_happy_path(page):\n    \n        login = LoginPage(page)\n        dashboard = Dashboard(page)\n        beneficiary = BeneficiaryListPage(page)\n        payment = PaymentListPage(page)\n        sampling = SamplingPage(page)\n    \n        with report.step(\"Login\"):\n            login.load()\n            login.login(\"SuperAdmin\", \"Welcome@2\")\n            report.assert_visible(login.userIcon, \"User icon visible after login\", timeout=15000)\n    \n        with report.step(\"Verify login with bth_qa_reporter function\"):\n            expect(page.locator(\"//div[@class='rf-page-header-action-item-username']\")).to_be_visible()\n    \n        with report.step(\"Select Domain\"):\n            page.wait_for_timeout(10000)\n            report.assert_enabled(dashboard.domain_drp, \"Domain dropdown enabled\")\n            dashboard.select_domain()\n>           page.wait_for_timeout(1000)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests\\test_cva_happyPath.py:43: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <pages.dashboard_page.Dashboard object at 0x000001B2368F5400>\n\n    def select_domain(self):\n        self.domain_drp.click()\n>       expect(self.domain).to_be_visible(timeout=60000)\nE       AssertionError: Locator expected to be visible\nE       Actual value: None\nE       Error: element(s) not found \nE       Call log:\nE         - Expect \"to_be_visible\" with timeout 60000ms\nE         - waiting for locator(\".select-rf-popper:visible\").get_by_text(\"sci-co-niger\", exact=True)\n\npages\\dashboard_page.py:23: AssertionError",
+    "steps": [
+      {
+        "name": "Login",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "User icon visible after login",
+        "status": "PASS",
+        "details": "Playwright assertion passed: visible",
+        "expected": "visible",
+        "actual": "visible",
+        "screenshot": null
+      },
+      {
+        "name": "Verify login with bth_qa_reporter function",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Select Domain",
+        "status": "FAIL",
+        "details": "Locator expected to be visible\nActual value: None\nError: element(s) not found \nCall log:\n  - Expect \"to_be_visible\" with timeout 60000ms\n  - waiting for locator(\".select-rf-popper:visible\").get_by_text(\"sci-co-niger\", exact=True)\n",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Domain dropdown enabled",
+        "status": "FAIL",
+        "details": "Playwright assertion passed: enabled",
+        "expected": "enabled",
+        "actual": "enabled",
+        "screenshot": "screenshots/Select_Domain_failure_1792381558643.png"
+      }
+    ],
+    "logs": [
+      {
+        "level": "PRINT",
+        "message": "Username: & Pass:  admin 12345"
+      }
+    ],
+    "metadata": {
+      "Browser": "chromium",
+      "URL": "https://cashapp.savethechildren.net/"
+    },
+    "quality_scans": [],
+    "failure_screenshot": "screenshots/Select_Domain_failure_1792381558643.png"
+  }
+]

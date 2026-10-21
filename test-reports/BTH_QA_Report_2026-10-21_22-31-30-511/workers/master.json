@@ -1,0 +1,118 @@
+[
+  {
+    "nodeid": "Environment: Prod | Country: Sudan CVA | Project: GFFO Training | Browser: Chromium",
+    "name": "End-to-End CVA Happy Path Test",
+    "outcome": "failed",
+    "duration": 393.1137737999961,
+    "error": "page = <Page url='https://cashapp.savethechildren.net/BeneficiaryListApproval'>\n\n    def test_cva_happy_path(page):\n    \n        login = LoginPage(page)\n        dashboard = Dashboard(page)\n        beneficiary = BeneficiaryListPage(page)\n        payment = PaymentListPage(page)\n        sampling = SamplingPage(page)\n    \n        with report.step(\"Login\"):\n            login.load()\n            login.login(\"SuperAdmin\", \"Welcome@2\")\n            report.assert_visible(login.userIcon, \"User icon visible after login\", timeout=15000)\n    \n        with report.step(\"Verify login with bth_qa_reporter function\"):\n            expect(page.locator(\"//div[@class='rf-page-header-action-item-username']\")).to_be_visible()\n    \n        with report.step(\"Select Domain\"):\n            page.wait_for_timeout(10000)\n            report.assert_enabled(dashboard.domain_drp, \"Domain dropdown enabled\")\n            dashboard.select_domain()\n            page.wait_for_timeout(1000)\n            page.wait_for_load_state(\"networkidle\")\n    \n        with report.step(\"Select Country & Project\"):\n            page.wait_for_timeout(1000)\n            report.assert_enabled(dashboard.country_drp, \"Country dropdown enabled\")\n            dashboard.select_country()\n            page.wait_for_timeout(1000)\n            dashboard.select_project()\n            page.wait_for_load_state(\"networkidle\")\n    \n        with report.step(\"Create Beneficiary List\"):\n            beneficiary_list_id = beneficiary.create_beneficiary(\"test\")\n            print(\"Beneficiary List ID: \", beneficiary_list_id)\n            login.logout()\n    \n        with report.step(\"Approve Beneficiary List\"):\n            login.login2(\"shah.ca\", \"WelcomeCVA@2026\")\n            beneficiary.approve_beneficiary(beneficiary_list_id)\n    \n        with report.step(\"Create Payment List\"):\n>           payment_list_id = payment.create_payment(beneficiary_list_id)\n                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests\\test_cva_happyPath.py:71: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <pages.paymentList_page.PaymentListPage object at 0x0000028EAFD31940>, beneficiary_list_id = 'G73V52JX'\n\n    def create_payment(self, beneficiary_list_id):\n        print(f\"Received Beneficiary ID: {beneficiary_list_id}\")\n        self.paymentlist.click()\n        self.paymentlist_overview.click()\n>       expect(self.create_btn).to_be_visible(timeout=60000)\nE       AssertionError: Locator expected to be visible\nE       Actual value: None\nE       Error: element(s) not found \nE       Call log:\nE         - Expect \"to_be_visible\" with timeout 60000ms\nE         - waiting for get_by_role(\"button\", name=\"Create New Payment List\")\nE           - waiting for\" https://cashapp.savethechildren.net/BeneficiaryListApproval\" navigation to finish...\nE           - navigated to \"https://cashapp.savethechildren.net/BeneficiaryListApproval\"\n\npages\\paymentList_page.py:61: AssertionError",
+    "steps": [
+      {
+        "name": "Login",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null,
+        "duration": 47.46724079998967
+      },
+      {
+        "name": "User icon visible after login",
+        "status": "PASS",
+        "details": "Playwright assertion passed: visible",
+        "expected": "visible",
+        "actual": "visible",
+        "screenshot": null
+      },
+      {
+        "name": "Verify login with bth_qa_reporter function",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null,
+        "duration": 0.003752500007976778
+      },
+      {
+        "name": "Select Domain",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null,
+        "duration": 18.932844099996146
+      },
+      {
+        "name": "Domain dropdown enabled",
+        "status": "PASS",
+        "details": "Playwright assertion passed: enabled",
+        "expected": "enabled",
+        "actual": "enabled",
+        "screenshot": null
+      },
+      {
+        "name": "Select Country & Project",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null,
+        "duration": 19.316789199991035
+      },
+      {
+        "name": "Country dropdown enabled",
+        "status": "PASS",
+        "details": "Playwright assertion passed: enabled",
+        "expected": "enabled",
+        "actual": "enabled",
+        "screenshot": null
+      },
+      {
+        "name": "Create Beneficiary List",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null,
+        "duration": 149.97010070001124
+      },
+      {
+        "name": "Approve Beneficiary List",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null,
+        "duration": 94.62612489999447
+      },
+      {
+        "name": "Create Payment List",
+        "status": "FAIL",
+        "details": "Locator expected to be visible\nActual value: None\nError: element(s) not found \nCall log:\n  - Expect \"to_be_visible\" with timeout 60000ms\n  - waiting for get_by_role(\"button\", name=\"Create New Payment List\")\n    - waiting for\" https://cashapp.savethechildren.net/BeneficiaryListApproval\" navigation to finish...\n    - navigated to \"https://cashapp.savethechildren.net/BeneficiaryListApproval\"\n",
+        "expected": null,
+        "actual": null,
+        "screenshot": "screenshots/Create_Payment_List_failure_1792600684792.png",
+        "duration": 62.796388399990974
+      }
+    ],
+    "logs": [
+      {
+        "level": "PRINT",
+        "message": "Beneficiary List ID:  G73V52JX"
+      },
+      {
+        "level": "PRINT",
+        "message": "Received ID: G73V52JX"
+      },
+      {
+        "level": "PRINT",
+        "message": "Received Beneficiary ID: G73V52JX"
+      }
+    ],
+    "metadata": {
+      "Browser": "chromium",
+      "URL": "https://cashapp.savethechildren.net/BeneficiaryListApproval"
+    },
+    "quality_scans": [],
+    "failure_screenshot": "screenshots/Create_Payment_List_failure_1792600684792.png"
+  }
+]

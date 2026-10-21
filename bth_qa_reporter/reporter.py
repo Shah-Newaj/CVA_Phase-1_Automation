@@ -69,6 +69,7 @@ class Reporter:
         original exception is re-raised so pytest still fails the test.
         """
         step = self._add(name, "INFO", details=details, return_step=True)
+        started_at = time.perf_counter()
         try:
             yield step
         except Exception as exc:
@@ -89,6 +90,8 @@ class Reporter:
             raise
         else:
             step["status"] = "PASS"
+        finally:
+            step["duration"] = time.perf_counter() - started_at
 
     def log(self, message, level="INFO"):
         """Record a console/log message against the active test."""

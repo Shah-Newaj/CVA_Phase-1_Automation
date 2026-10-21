@@ -1,0 +1,111 @@
+[
+  {
+    "nodeid": "Environment: Prod | Country: Somalia CVA | Project: MFAT NZDRP Training | Browser: Chromium",
+    "name": "End-to-End CVA Happy Path Test",
+    "outcome": "failed",
+    "duration": 243.22355740000785,
+    "error": "page = <Page url='https://cashapp.savethechildren.net/BeneficiaryListApproval'>\n\n    def test_cva_happy_path(page):\n    \n        login = LoginPage(page)\n        dashboard = Dashboard(page)\n        beneficiary = BeneficiaryListPage(page)\n        payment = PaymentListPage(page)\n        sampling = SamplingPage(page)\n    \n        with report.step(\"Login\"):\n            login.load()\n            login.login(\"SuperAdmin\", \"Welcome@2\")\n            report.assert_visible(login.userIcon, \"User icon visible after login\", timeout=15000)\n    \n        with report.step(\"Verify login with bth_qa_reporter function\"):\n            expect(page.locator(\"//div[@class='rf-page-header-action-item-username']\")).to_be_visible()\n    \n        with report.step(\"Select Domain\"):\n            page.wait_for_timeout(10000)\n            report.assert_enabled(dashboard.domain_drp, \"Domain dropdown enabled\")\n            dashboard.select_domain()\n            page.wait_for_timeout(1000)\n            page.wait_for_load_state(\"networkidle\")\n    \n        with report.step(\"Select Country & Project\"):\n            page.wait_for_timeout(1000)\n            report.assert_enabled(dashboard.country_drp, \"Country dropdown enabled\")\n            dashboard.select_country()\n            page.wait_for_timeout(1000)\n            dashboard.select_project()\n            page.wait_for_load_state(\"networkidle\")\n    \n        with report.step(\"Create Beneficiary List\"):\n            beneficiary_list_id = beneficiary.create_beneficiary(\"test\")\n            print(\"Beneficiary List ID: \", beneficiary_list_id)\n            login.logout()\n    \n        with report.step(\"Approve Beneficiary List\"):\n            login.login2(\"shah.ca\", \"WelcomeCVA@2026\")\n            beneficiary.approve_beneficiary(beneficiary_list_id)\n    \n        with report.step(\"Create Payment List\"):\n>           payment_list_id = payment.create_payment(beneficiary_list_id)\n                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests\\test_cva_happyPath.py:71: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\npages\\paymentList_page.py:64: in create_payment\n    self.page.goto(urljoin(self.page.url, \"/PaymentListOverView\"))\n..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\sync_api\\_generated.py:9054: in goto\n    self._sync(\n..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_page.py:552: in goto\n    return await self._main_frame.goto(**locals_to_params(locals()))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_frame.py:153: in goto\n    await self._channel.send(\n..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:69: in send\n    return await self._connection.wrap_api_call(\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <playwright._impl._connection.Connection object at 0x000001E056A9DE80>, cb = <function Channel.send.<locals>.<lambda> at 0x000001E05823FEC0>, is_internal = False, title = None\n\n    async def wrap_api_call(\n        self, cb: Callable[[], Any], is_internal: bool = False, title: str = None\n    ) -> Any:\n        if self._api_zone.get():\n            return await cb()\n        task = asyncio.current_task(self._loop)\n        st: List[inspect.FrameInfo] = getattr(\n            task, \"__pw_stack__\", None\n        ) or inspect.stack(0)\n    \n        parsed_st = _extract_stack_trace_information_from_stack(st, is_internal, title)\n        self._api_zone.set(parsed_st)\n        try:\n            return await cb()\n        except Exception as error:\n>           raise rewrite_error(error, f\"{parsed_st['apiName']}: {error}\") from None\nE           playwright._impl._errors.Error: Page.goto: net::ERR_ABORTED at https://cashapp.savethechildren.net/PaymentListOverView\nE           Call log:\nE             - navigating to \"https://cashapp.savethechildren.net/PaymentListOverView\", waiting until \"load\"\n\n..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_connection.py:559: Error",
+    "steps": [
+      {
+        "name": "Login",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "User icon visible after login",
+        "status": "PASS",
+        "details": "Playwright assertion passed: visible",
+        "expected": "visible",
+        "actual": "visible",
+        "screenshot": null
+      },
+      {
+        "name": "Verify login with bth_qa_reporter function",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Select Domain",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Domain dropdown enabled",
+        "status": "PASS",
+        "details": "Playwright assertion passed: enabled",
+        "expected": "enabled",
+        "actual": "enabled",
+        "screenshot": null
+      },
+      {
+        "name": "Select Country & Project",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Country dropdown enabled",
+        "status": "PASS",
+        "details": "Playwright assertion passed: enabled",
+        "expected": "enabled",
+        "actual": "enabled",
+        "screenshot": null
+      },
+      {
+        "name": "Create Beneficiary List",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Approve Beneficiary List",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Create Payment List",
+        "status": "FAIL",
+        "details": "Page.goto: net::ERR_ABORTED at https://cashapp.savethechildren.net/PaymentListOverView\nCall log:\n  - navigating to \"https://cashapp.savethechildren.net/PaymentListOverView\", waiting until \"load\"\n",
+        "expected": null,
+        "actual": null,
+        "screenshot": "screenshots/Create_Payment_List_failure_1792555289861.png"
+      }
+    ],
+    "logs": [
+      {
+        "level": "PRINT",
+        "message": "Beneficiary List ID:  ITEIGR3W"
+      },
+      {
+        "level": "PRINT",
+        "message": "Received ID: ITEIGR3W"
+      },
+      {
+        "level": "PRINT",
+        "message": "Received ID: ITEIGR3W"
+      }
+    ],
+    "metadata": {
+      "Browser": "chromium",
+      "URL": "https://cashapp.savethechildren.net/BeneficiaryListApproval"
+    },
+    "quality_scans": [],
+    "failure_screenshot": "screenshots/Create_Payment_List_failure_1792555289861.png"
+  }
+]

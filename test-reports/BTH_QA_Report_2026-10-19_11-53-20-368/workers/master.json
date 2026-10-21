@@ -1,0 +1,163 @@
+[
+  {
+    "nodeid": "Environment: Prod | Country: Ethiopia CVA | Project: Ethiopia - Trigger-based Anticipatory Action Pilot | Browser: Chromium",
+    "name": "End-to-End CVA Happy Path Test",
+    "outcome": "failed",
+    "duration": 805.3557932998519,
+    "error": "page = <Page url='https://cashapp.savethechildren.net/SampleReportSelectionApproval?id=1c91743d-bbc2-404a-97fe-bf8502d1424d'>\n\n    def test_cva_happy_path(page):\n    \n        login = LoginPage(page)\n        dashboard = Dashboard(page)\n        beneficiary = BeneficiaryListPage(page)\n        payment = PaymentListPage(page)\n        sampling = SamplingPage(page)\n    \n        with report.step(\"Login\"):\n            login.load()\n            login.login(\"SuperAdmin\", \"Welcome@2\")\n            report.assert_visible(login.userIcon, \"User icon visible after login\", timeout=15000)\n    \n        with report.step(\"Verify login with bth_qa_reporter function\"):\n            expect(page.locator(\"//div[@class='rf-page-header-action-item-username']\")).to_be_visible()\n    \n        with report.step(\"Select Domain\"):\n            page.wait_for_timeout(10000)\n            report.assert_enabled(dashboard.domain_drp, \"Domain dropdown enabled\")\n            dashboard.select_domain()\n            page.wait_for_timeout(1000)\n            page.wait_for_load_state(\"networkidle\")\n    \n        with report.step(\"Select Country & Project\"):\n            page.wait_for_timeout(1000)\n            report.assert_enabled(dashboard.country_drp, \"Country dropdown enabled\")\n            dashboard.select_country()\n            page.wait_for_timeout(1000)\n            dashboard.select_project()\n            page.wait_for_load_state(\"networkidle\")\n    \n        with report.step(\"Create Beneficiary List\"):\n            beneficiary_list_id = beneficiary.create_beneficiary(\"test\")\n            print(\"Beneficiary List ID: \", beneficiary_list_id)\n            login.logout()\n    \n        with report.step(\"Approve Beneficiary List\"):\n            login.login2(\"shah.ca\", \"WelcomeCVA@2026\")\n            beneficiary.approve_beneficiary(beneficiary_list_id)\n    \n        with report.step(\"Create Payment List\"):\n            payment_list_id = payment.create_payment(beneficiary_list_id)\n            print(\"Payment List ID: \", payment_list_id)\n            login.logout()\n    \n        with report.step(\"Approve Payment List\"):\n            login.login(\"SuperAdmin\", \"Welcome@2\")\n            payment.approve_payment(payment_list_id)\n    \n        with report.step(\"Payment Tracking\"):\n            payment.payment_tracking(payment_list_id)\n    \n        with report.step(\"Create Sample\"):\n            sampling.create_sample(beneficiary_list_id)\n            login.logout()\n    \n        with report.step(\"Approve Sample\"):\n            login.login2(\"shah.ca\", \"WelcomeCVA@2026\")\n>           sampling.approve_sample()\n\ntests\\test_cva_happyPath.py:88: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\npages\\sampling_page.py:84: in approve_sample\n    self.page.wait_for_url(\"https://cashapp.savethechildren.net/SampleReportApproval\")\n..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\sync_api\\_generated.py:9197: in wait_for_url\n    self._sync(\n..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_page.py:580: in wait_for_url\n    return await self._main_frame.wait_for_url(**locals_to_params(locals()))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_frame.py:263: in wait_for_url\n    async with self.expect_navigation(\n..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_event_context_manager.py:33: in __aexit__\n    await self._future\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\n    async def continuation() -> Optional[Response]:\n>       event = await waiter.result()\n                ^^^^^^^^^^^^^^^^^^^^^\nE       playwright._impl._errors.TimeoutError: Timeout 30000ms exceeded.\nE       =========================== logs ===========================\nE       waiting for navigation to \"https://cashapp.savethechildren.net/SampleReportApproval\" until 'load'\nE       ============================================================\n\n..\\..\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\playwright\\_impl\\_frame.py:239: TimeoutError",
+    "steps": [
+      {
+        "name": "Login",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "User icon visible after login",
+        "status": "PASS",
+        "details": "Playwright assertion passed: visible",
+        "expected": "visible",
+        "actual": "visible",
+        "screenshot": null
+      },
+      {
+        "name": "Verify login with bth_qa_reporter function",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Select Domain",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Domain dropdown enabled",
+        "status": "PASS",
+        "details": "Playwright assertion passed: enabled",
+        "expected": "enabled",
+        "actual": "enabled",
+        "screenshot": null
+      },
+      {
+        "name": "Select Country & Project",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Country dropdown enabled",
+        "status": "PASS",
+        "details": "Playwright assertion passed: enabled",
+        "expected": "enabled",
+        "actual": "enabled",
+        "screenshot": null
+      },
+      {
+        "name": "Create Beneficiary List",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Approve Beneficiary List",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Create Payment List",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Approve Payment List",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Payment Tracking",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Create Sample",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Approve Sample",
+        "status": "FAIL",
+        "details": "Timeout 30000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation to \"https://cashapp.savethechildren.net/SampleReportApproval\" until 'load'\n============================================================",
+        "expected": null,
+        "actual": null,
+        "screenshot": "screenshots/Approve_Sample_failure_1792390006715.png"
+      }
+    ],
+    "logs": [
+      {
+        "level": "PRINT",
+        "message": "Beneficiary List ID:  TPGXLUJ9"
+      },
+      {
+        "level": "PRINT",
+        "message": "Received ID: TPGXLUJ9"
+      },
+      {
+        "level": "PRINT",
+        "message": "Received ID: TPGXLUJ9"
+      },
+      {
+        "level": "PRINT",
+        "message": "RV9UPYQY"
+      },
+      {
+        "level": "PRINT",
+        "message": "Payment List ID:  RV9UPYQY"
+      },
+      {
+        "level": "PRINT",
+        "message": "Received ID: RV9UPYQY"
+      },
+      {
+        "level": "PRINT",
+        "message": "Received ID: RV9UPYQY"
+      },
+      {
+        "level": "PRINT",
+        "message": "Received ID: TPGXLUJ9"
+      }
+    ],
+    "metadata": {
+      "Browser": "chromium",
+      "URL": "https://cashapp.savethechildren.net/SampleReportSelectionApproval?id=1c91743d-bbc2-404a-97fe-bf8502d1424d"
+    },
+    "quality_scans": [],
+    "failure_screenshot": "screenshots/Approve_Sample_failure_1792390006715.png"
+  }
+]

@@ -1,3 +1,5 @@
+from urllib.parse import urljoin
+
 from playwright.sync_api import Page
 import time
 from playwright.sync_api import expect
@@ -53,27 +55,35 @@ class PaymentListPage:
 
 
     def create_payment(self, beneficiary_list_id):
-        print(f"Received ID: {beneficiary_list_id}")
+        print(f"Received Beneficiary ID: {beneficiary_list_id}")
         self.paymentlist.click()
         self.paymentlist_overview.click()
+        expect(self.create_btn).to_be_visible(timeout=60000)
         self.create_btn.click()
         self.page.wait_for_timeout(5000) #under 5 seconds it's not working
         self.location3_drp.click()
-        self.page.wait_for_timeout(3000)
+        self.page.wait_for_timeout(6000)
         self.location3.click()
-        self.page.wait_for_timeout(3000)
+        self.page.wait_for_timeout(6000)
         self.beneficiarylist_drop.click()
-        self.page.wait_for_timeout(3000)
+        self.page.wait_for_timeout(6000)
         self.benef_search.fill(beneficiary_list_id)
         self.benef_search.press("Enter")
         self.page.locator(f"//div[contains(text(),'{beneficiary_list_id}')]").click()
         self.page.wait_for_timeout(1000)
         self.save_btn.click()
-        self.page.wait_for_timeout(5000)
+        expect(self.page.locator(".preloader-rf-backarea")).to_be_hidden(
+            timeout=60000
+        )
         self.page.wait_for_load_state("networkidle")
+        expect(self.assign_pymnt_btn).to_be_visible(timeout=60000)
         self.assign_pymnt_btn.click()
-        self.page.wait_for_timeout(5000)
-        payment_list_id = self.page.locator("//div[normalize-space()='PAYMENT LIST ID']/following-sibling::div[contains(@class,'summary-value')]").inner_text().strip()
+        expect(self.page.locator(".preloader-rf-backarea")).to_be_hidden(
+            timeout=60000
+        )
+        payment_list_id = self.page.locator(
+            "//div[normalize-space()='PAYMENT LIST ID']/following-sibling::div[contains(@class,'summary-value')]"
+        ).inner_text().strip()
         print(payment_list_id)
         self.cva_type_drp.click()
         self.cva_type.click()
@@ -104,35 +114,48 @@ class PaymentListPage:
 
     def approve_payment(self, payment_list_id):
         print(f"Received ID: {payment_list_id}")
-        self.paymentlist.click()
-        self.payment_list_approval.click()
-        self.page.wait_for_timeout(5000)
+        expect(self.page.locator(".preloader-rf-backarea")).to_be_hidden(
+            timeout=60000
+        )
+        self.page.goto(urljoin(self.page.url, "/PaymentListApproval"))
+        expect(self.payment_search).to_be_visible(timeout=60000)
+        expect(self.page.locator(".preloader-rf-backarea")).to_be_hidden(
+            timeout=60000
+        )
         self.payment_search.fill(payment_list_id)
         self.payment_search.press("Enter")
-        self.page.wait_for_timeout(3000)
-        row = self.page.locator("//tbody//tr//td[2]")
-        row.wait_for(state="visible")
+        row = self.page.locator("tbody tr").filter(has_text=payment_list_id)
+        expect(row).to_be_visible(timeout=60000)
         row.click()
-        self.page.wait_for_load_state("networkidle")
+        expect(self.view_payments_btn).to_be_visible(timeout=60000)
         self.view_payments_btn.click()
+        expect(self.page.locator(".preloader-rf-backarea")).to_be_hidden(
+            timeout=60000
+        )
+        expect(self.approve_btn).to_be_visible(timeout=60000)
         self.approve_btn.click()
-        self.page.wait_for_url("https://cashapp.savethechildren.net/PaymentListApproval")
+        self.page.wait_for_url("**/PaymentListApproval**", timeout=60000)
         self.page.wait_for_load_state("networkidle")
         self.page.wait_for_timeout(10000)
 
 
     def payment_tracking(self, payment_list_id):
         print(f"Received ID: {payment_list_id}")
-        self.paymentlist.click()
-        self.payment_tracking_overview.click()
-        self.page.wait_for_timeout(5000)
-        self.payment_search.fill(payment_list_id)
-        self.payment_search.press("Enter")
-        self.page.wait_for_timeout(3000)
-        row = self.page.locator("//tbody//tr//td[3]")
-        row.wait_for(state="visible")
-        row.click()
+        self.page.goto(urljoin(self.page.url, "/PaymentTrackingOverview"))
+        expect(self.payment_search).to_be_visible(timeout=60000)
+        expect(self.page.locator(".preloader-rf-backarea")).to_be_hidden(
+            timeout=60000
+        )
+        row = self.page.locator("tbody tr").filter(has_text=payment_list_id)
+        expect(row).to_be_visible(timeout=60000)
+        tracking_link = row.locator("td").nth(2).get_by_role("link")
+        expect(tracking_link).to_be_visible(timeout=60000)
+        tracking_link.click()
 
+        expect(self.page.locator(".preloader-rf-backarea")).to_be_hidden(
+            timeout=60000
+        )
+        expect(self.select_all_checkbox).to_be_visible(timeout=60000)
         self.select_all_checkbox.click()
         self.page.wait_for_timeout(3000)
         self.update_payment_status_drp.click()
@@ -152,6 +175,3 @@ class PaymentListPage:
         self.save_record_transfer_btn.click()
         self.page.wait_for_timeout(10000)
         self.page.wait_for_url("https://cashapp.savethechildren.net/PaymentTrackingOverview")
-
-
-

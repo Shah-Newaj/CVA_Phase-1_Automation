@@ -1,0 +1,58 @@
+[
+  {
+    "nodeid": "Environment: Prod | Country: Niger CVA | Project: BMZ RESA Training | Browser: Chromium",
+    "name": "Tile_Data_Validation",
+    "outcome": "failed",
+    "duration": 98.72182539990172,
+    "error": "page = <Page url='https://cashapp.savethechildren.net/'>\n\n    def test_household_management_dashboard_tiles(page):\n        login = LoginPage(page)\n        dashboard = Dashboard(page)\n        failures = []\n    \n        # Authenticate using the same login flow as the happy-path test.\n        with report.step(\"Login to CVA application\"):\n            login.load()\n            login.login(\"SuperAdmin\", \"Welcome@2\")\n            report.assert_visible(login.userIcon, \"User icon visible after login\", timeout=60000)\n    \n        # Select and verify the configured Domain, Country, and Project.\n        with report.step(\"Select dashboard context\"):\n            page.wait_for_timeout(10000)\n            report.assert_enabled(dashboard.domain_drp, \"Domain dropdown enabled\")\n            report.assert_enabled(dashboard.country_drp, \"Country dropdown enabled\")\n>           dashboard.select_country()\n\n..\\CVA_Phase-1_Automation_Project_Criteria_ReportFixed\\tests\\test_dashboard_validations.py:369: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <pages.dashboard_page.Dashboard object at 0x0000021E6A311400>\n\n    def select_country(self):\n        self.country_drp.click()\n>       expect(self.country).to_be_visible(timeout=60000)\nE       AssertionError: Locator expected to be visible\nE       Actual value: None\nE       Error: element(s) not found \nE       Call log:\nE         - Expect \"to_be_visible\" with timeout 60000ms\nE         - waiting for locator(\".select-rf-popper:visible\").get_by_text(\"Niger CVA\", exact=True)\n\npages\\dashboard_page.py:23: AssertionError",
+    "steps": [
+      {
+        "name": "Login to CVA application",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "User icon visible after login",
+        "status": "PASS",
+        "details": "Playwright assertion passed: visible",
+        "expected": "visible",
+        "actual": "visible",
+        "screenshot": null
+      },
+      {
+        "name": "Select dashboard context",
+        "status": "FAIL",
+        "details": "Locator expected to be visible\nActual value: None\nError: element(s) not found \nCall log:\n  - Expect \"to_be_visible\" with timeout 60000ms\n  - waiting for locator(\".select-rf-popper:visible\").get_by_text(\"Niger CVA\", exact=True)\n",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Domain dropdown enabled",
+        "status": "PASS",
+        "details": "Playwright assertion passed: enabled",
+        "expected": "enabled",
+        "actual": "enabled",
+        "screenshot": null
+      },
+      {
+        "name": "Country dropdown enabled",
+        "status": "FAIL",
+        "details": "Playwright assertion passed: enabled",
+        "expected": "enabled",
+        "actual": "enabled",
+        "screenshot": "screenshots/Select_dashboard_context_failure_1791445341836.png"
+      }
+    ],
+    "logs": [],
+    "metadata": {
+      "Browser": "chromium",
+      "URL": "https://cashapp.savethechildren.net/"
+    },
+    "quality_scans": [],
+    "failure_screenshot": "screenshots/Select_dashboard_context_failure_1791445341836.png"
+  }
+]

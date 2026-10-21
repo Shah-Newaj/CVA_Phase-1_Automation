@@ -25,9 +25,17 @@ class BeneficiaryListPage:
         self.location3_text.fill(location_text)
         beneficiary_list_id = self.page.locator("(//input[@type='text'])[7]").input_value()
         self.save_btn.click()
+        expect(self.page.locator(".preloader-rf-backarea")).to_be_hidden(
+            timeout=60000
+        )
+        expect(self.select_all_checkbox).to_be_visible(timeout=60000)
         self.select_all_checkbox.click()
+        expect(self.savetobeneficiarylist_btn).to_be_visible(timeout=60000)
         self.savetobeneficiarylist_btn.click()
-        self.page.wait_for_load_state("networkidle")
+        expect(self.page.locator(".preloader-rf-backarea")).to_be_hidden(
+            timeout=60000
+        )
+        expect(self.sendlistforapproval_btn).to_be_visible(timeout=60000)
         self.sendlistforapproval_btn.click()
         self.page.wait_for_load_state("networkidle")
         self.page.wait_for_timeout(10000)
@@ -40,16 +48,25 @@ class BeneficiaryListPage:
         print(f"Received ID: {beneficiary_list_id}")
         self.beneficiarylist.click()
         self.benef_list_approval.click()
-        self.page.wait_for_timeout(3000)
+        expect(self.benef_search).to_be_visible(timeout=60000)
+        expect(self.page.locator(".preloader-rf-backarea")).to_be_hidden(
+            timeout=60000
+        )
         self.benef_search.fill(beneficiary_list_id)
         self.benef_search.press("Enter")
-        self.page.wait_for_timeout(3000)
-        row = self.page.locator("//tbody//tr//td[2]")
-        row.wait_for(state="visible")
-        row.click()
+        row = self.page.locator("tbody tr").filter(has_text=beneficiary_list_id)
+        expect(row).to_be_visible(timeout=60000)
+        list_name_link = row.locator("td").nth(1).get_by_role("link")
+        expect(list_name_link).to_be_visible(timeout=60000)
+        list_name_link.click()
 
-        self.page.wait_for_timeout(5000)
+        self.page.wait_for_url(
+            "**/BeneficiaryListSelectionApproval**", timeout=60000
+        )
+        expect(self.approve_btn).to_be_visible(timeout=60000)
         self.approve_btn.click()
-        self.page.wait_for_url("https://cashapp.savethechildren.net/BeneficiaryListApproval")
+        self.page.wait_for_url(
+            "**/BeneficiaryListSelectionApproval**"
+        )
         self.page.wait_for_load_state("networkidle")
         self.page.wait_for_timeout(10000)

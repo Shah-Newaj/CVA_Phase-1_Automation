@@ -1,0 +1,99 @@
+[
+  {
+    "nodeid": "Environment: Prod | Country: Ethiopia CVA | Project: Ethiopia - Trigger-based Anticipatory Action Pilot | Browser: Chromium",
+    "name": "End-to-End CVA Happy Path Test",
+    "outcome": "failed",
+    "duration": 209.86192020005547,
+    "error": "page = <Page url='https://cashapp.savethechildren.net/BeneficiaryListApproval'>\n\n    def test_cva_happy_path(page):\n    \n        login = LoginPage(page)\n        dashboard = Dashboard(page)\n        beneficiary = BeneficiaryListPage(page)\n        payment = PaymentListPage(page)\n        sampling = SamplingPage(page)\n    \n        with report.step(\"Login\"):\n            login.load()\n            login.login(\"SuperAdmin\", \"Welcome@2\")\n            report.assert_visible(login.userIcon, \"User icon visible after login\", timeout=15000)\n    \n        with report.step(\"Verify login with bth_qa_reporter function\"):\n            expect(page.locator(\"//div[@class='rf-page-header-action-item-username']\")).to_be_visible()\n    \n        with report.step(\"Select Domain\"):\n            page.wait_for_timeout(10000)\n            report.assert_enabled(dashboard.domain_drp, \"Domain dropdown enabled\")\n            dashboard.select_domain()\n            page.wait_for_timeout(1000)\n            page.wait_for_load_state(\"networkidle\")\n    \n        with report.step(\"Select Country & Project\"):\n            page.wait_for_timeout(1000)\n            report.assert_enabled(dashboard.country_drp, \"Country dropdown enabled\")\n            dashboard.select_country()\n            page.wait_for_timeout(1000)\n            dashboard.select_project()\n            page.wait_for_load_state(\"networkidle\")\n    \n        with report.step(\"Create Beneficiary List\"):\n            beneficiary_list_id = beneficiary.create_beneficiary(\"test\")\n            print(\"Beneficiary List ID: \", beneficiary_list_id)\n            login.logout()\n    \n        with report.step(\"Approve Beneficiary List\"):\n            login.login2(\"shah.ca\", \"WelcomeCVA@2026\")\n>           beneficiary.approve_beneficiary(beneficiary_list_id)\n\ntests\\test_cva_happyPath.py:68: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\nself = <pages.beneficiaryList_page.BeneficiaryListPage object at 0x0000019DAB231400>\nbeneficiary_list_id = 'TBPCAYJL'\n\n    def approve_beneficiary(self, beneficiary_list_id):\n        print(f\"Received ID: {beneficiary_list_id}\")\n        self.beneficiarylist.click()\n        self.benef_list_approval.click()\n        expect(self.benef_search).to_be_visible(timeout=60000)\n        expect(self.page.locator(\".preloader-rf-backarea\")).to_be_hidden(\n            timeout=60000\n        )\n        self.benef_search.fill(beneficiary_list_id)\n        self.benef_search.press(\"Enter\")\n        row = self.page.locator(\"tbody tr\").filter(has_text=beneficiary_list_id)\n        expect(row).to_be_visible(timeout=60000)\n        row.click()\n    \n>       expect(self.approve_btn).to_be_visible(timeout=60000)\nE       AssertionError: Locator expected to be visible\nE       Actual value: None\nE       Error: element(s) not found \nE       Call log:\nE         - Expect \"to_be_visible\" with timeout 60000ms\nE         - waiting for locator(\"//button[normalize-space()='Approve']\")\n\npages\\beneficiaryList_page.py:61: AssertionError",
+    "steps": [
+      {
+        "name": "Login",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "User icon visible after login",
+        "status": "PASS",
+        "details": "Playwright assertion passed: visible",
+        "expected": "visible",
+        "actual": "visible",
+        "screenshot": null
+      },
+      {
+        "name": "Verify login with bth_qa_reporter function",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Select Domain",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Domain dropdown enabled",
+        "status": "PASS",
+        "details": "Playwright assertion passed: enabled",
+        "expected": "enabled",
+        "actual": "enabled",
+        "screenshot": null
+      },
+      {
+        "name": "Select Country & Project",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Country dropdown enabled",
+        "status": "PASS",
+        "details": "Playwright assertion passed: enabled",
+        "expected": "enabled",
+        "actual": "enabled",
+        "screenshot": null
+      },
+      {
+        "name": "Create Beneficiary List",
+        "status": "PASS",
+        "details": "",
+        "expected": null,
+        "actual": null,
+        "screenshot": null
+      },
+      {
+        "name": "Approve Beneficiary List",
+        "status": "FAIL",
+        "details": "Locator expected to be visible\nActual value: None\nError: element(s) not found \nCall log:\n  - Expect \"to_be_visible\" with timeout 60000ms\n  - waiting for locator(\"//button[normalize-space()='Approve']\")\n",
+        "expected": null,
+        "actual": null,
+        "screenshot": "screenshots/Approve_Beneficiary_List_failure_1792386854506.png"
+      }
+    ],
+    "logs": [
+      {
+        "level": "PRINT",
+        "message": "Beneficiary List ID:  TBPCAYJL"
+      },
+      {
+        "level": "PRINT",
+        "message": "Received ID: TBPCAYJL"
+      }
+    ],
+    "metadata": {
+      "Browser": "chromium",
+      "URL": "https://cashapp.savethechildren.net/BeneficiaryListApproval"
+    },
+    "quality_scans": [],
+    "failure_screenshot": "screenshots/Approve_Beneficiary_List_failure_1792386854506.png"
+  }
+]
