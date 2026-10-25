@@ -61,12 +61,11 @@ class BeneficiaryListPage:
         list_name_link.click()
 
         self.page.wait_for_url(
-            "**/BeneficiaryListSelectionApproval**", timeout=60000
+            "https://cashapp.savethechildren.net/BeneficiaryListApproval"
         )
         expect(self.approve_btn).to_be_visible(timeout=60000)
         self.approve_btn.click()
-        self.page.wait_for_url(
-            "**/BeneficiaryListSelectionApproval**"
-        )
+        self.page.wait_for_url("https://cashapp.savethechildren.net/BeneficiaryListSelectionApproval")
         self.page.wait_for_load_state("networkidle")
         self.page.wait_for_timeout(10000)
+
